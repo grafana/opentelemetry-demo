@@ -1,10 +1,13 @@
-# OpenTelemetry Demo
+# Grafana OpenTelemetry Demo
 
 [![Slack](https://img.shields.io/badge/slack-@cncf/otel/demo-brightgreen.svg?logo=slack)](https://cloud-native.slack.com/archives/C03B4CWV4DA)
 [![Version](https://img.shields.io/github/v/release/open-telemetry/opentelemetry-demo?color=blueviolet)](https://github.com/open-telemetry/opentelemetry-demo/releases)
 [![Commits](https://img.shields.io/github/commits-since/open-telemetry/opentelemetry-demo/latest?color=ff69b4&include_prereleases)](https://github.com/open-telemetry/opentelemetry-demo/graphs/commit-activity)
 [![Downloads](https://img.shields.io/docker/pulls/otel/demo)](https://hub.docker.com/r/otel/demo)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?color=red)](https://github.com/open-telemetry/opentelemetry-demo/blob/main/LICENSE)
+
+This repository is a fork from the original [OpenTelemetry Demo Application](https://github.com/open-telemetry/opentelemetry-demo)
+and meant to showcase the LGTM stack with OpenTelemetry.
 
 ## Under Construction
 
@@ -46,11 +49,11 @@ cd .\src\adservice\
 
 ### Run Docker Compose
 
-- Start the demo (It can take ~20min the first time the command is executed as
-all the images will be build):
+This demo automatically brings up a Grafana LGTM Stack (Loki, Grafana, Tempo, Mimir)
+via docker-compose:
 
 ```shell
-docker compose up
+docker-compose up
 ```
 
 ### Verify the Webstore & the Telemetry
