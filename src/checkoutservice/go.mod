@@ -60,3 +60,11 @@ require (
 )
 
 replace github.com/opentelemetry/opentelemetry-demo/src/productcatalogservice => ../productcatalogservice
+
+replace go.opentelemetry.io/otel => github.com/grafana/opentelemetry-go v0.0.0-20230821210413-dd55cfa34d33
+
+replace go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc => github.com/grafana/opentelemetry-go-contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.0.0-20230821182833-0f38bae48274
+
+replace go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp => github.com/grafana/opentelemetry-go-contrib/instrumentation/net/http/otelhttp v0.0.0-20230821182833-0f38bae48274
+
+replace go.opentelemetry.io/contrib/instrumentation/runtime => github.com/grafana/opentelemetry-go-contrib/instrumentation/runtime v0.0.0-20230821182833-0f38bae48274
