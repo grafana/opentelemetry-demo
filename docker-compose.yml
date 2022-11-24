@@ -292,6 +292,7 @@ services:
       - ENV_PLATFORM
       - OTEL_SERVICE_NAME=frontend
       - PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      - GRAFANA_FARO_ENDPOINT
     depends_on:
       - adservice
       - cartservice
@@ -596,6 +597,10 @@ services:
     depends_on:
       - jaeger
     logging: *logging
+    environment:
+      - GRAFANA_OTLP_ENDPOINT
+      - GRAFANA_INSTANCE_ID
+      - GRAFANA_CLOUD_APIKEY
 
   # Prometheus
   prometheus:
