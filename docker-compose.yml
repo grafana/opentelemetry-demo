@@ -548,37 +548,21 @@ services:
       timeout: 10s
       retries: 10
 
-  # Jaeger
-  jaeger:
-    image: jaegertracing/all-in-one
-    container_name: jaeger
-    command: ["--memory.max-traces", "10000", "--query.base-path", "/jaeger/ui"]
-    deploy:
-      resources:
-        limits:
-          memory: 275M
-    restart: always
-    ports:
-      - "${JAEGER_SERVICE_PORT}"                    # Jaeger UI
-      - "4317"                           # OTLP gRPC default port
-    environment:
-      - COLLECTOR_OTLP_ENABLED=true
-    logging: *logging
-
   # Grafana
   grafana:
-    image: grafana/grafana:9.1.0
+    image: grafana/grafana:9.3.0
     container_name: grafana
     volumes:
       - ./src/grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./src/grafana/provisioning/:/etc/grafana/provisioning/
+      - ../app-o11y-kwl/plugin:/var/lib/grafana/plugins/app-o11y-kwl
     ports:
-      - "${GRAFANA_SERVICE_PORT}"
+      - "${GRAFANA_SERVICE_PORT}:3000"
     logging: *logging
 
   # OpenTelemetry Collector
   otelcol:
-    image: otel/opentelemetry-collector-contrib:0.61.0
+    image: otel/opentelemetry-collector-contrib:0.67.0
     container_name: otel-col
     deploy:
       resources:
@@ -594,8 +578,11 @@ services:
       - "4318:4318"     # OTLP over HTTP receiver
       - "9464"          # Prometheus exporter
       - "8888"          # metrics endpoint
+      - "8006"          # fluent forward
     depends_on:
-      - jaeger
+      - prometheus
+      - loki
+      - tempo
     logging: *logging
     environment:
       - GRAFANA_OTLP_ENDPOINT
@@ -683,3 +670,29 @@ services:
       - recommendationservice
       - shippingservice
       - quoteservice
+  loki:
+    image: grafana/loki:2.7.0
+    container_name: loki
+    command:
+      - -config.file=/etc/loki/local-config.yaml
+      - -table-manager.retention-period=1d
+      - -table-manager.retention-deletes-enabled=true
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./src/loki/loki.yaml:/etc/loki/local-config.yaml
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    command: ["-config.file=/etc/tempo.yaml"]
+    volumes:
+      - ./src/tempo/tempo.yaml:/etc/tempo.yaml
+  promtail:
+    image: grafana/promtail:2.6.1
+    volumes:
+      # custom config will read logs from the containers of
+      # this project
+      - ./src/promtail/promtail.yml:/etc/promtail/config.yml
+      # to read container labels and logs
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers

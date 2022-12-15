@@ -1,25 +1,51 @@
 # extra settings to be merged into OpenTelemetry Collector configuration
 # do not delete this file
-extensions:
-  basicauth/grafanacloud:
-    client_auth:
-      username: ${GRAFANA_INSTANCE_ID}
-      password: ${GRAFANA_CLOUD_APIKEY}
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+        cors:
+          allowed_origins:
+            - "http://*"
+            - "https://*"
+  fluentforward:
+    endpoint: 0.0.0.0:8006
 
 exporters:
-  otlphttp/grafanacloud:
-    auth:
-      authenticator: basicauth/grafanacloud
-    endpoint: ${GRAFANA_OTLP_ENDPOINT}
+  logging:
+    loglevel: debug
+  otlp:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: "otelcol:9464"
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+
+processors:
+  batch:
+  spanmetrics:
+    metrics_exporter: prometheus
+    dimensions:
+      - name: process.runtime.name
+        default: UNSET
+      - name: telemetry.sdk.language
+        default: UNSET
+  servicegraph:
+    metrics_exporter: prometheus
 
 service:
-  extensions: [basicauth/grafanacloud]
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [spanmetrics, batch]
-      exporters: [logging, otlphttp/grafanacloud]
+      processors: [spanmetrics, servicegraph, batch]
+      exporters: [otlp]
     metrics:
       receivers: [otlp]
       processors: [batch]
-      exporters: [prometheus, logging, otlphttp/grafanacloud]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp, fluentforward]
+      exporters: [loki]
