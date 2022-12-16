@@ -114,6 +114,7 @@
             "uid": "webstore-metrics"
           },
           "editorMode": "code",
+          "exemplar": true,
           "expr": "sum(rate(latency_count{span_kind=\"SPAN_KIND_SERVER\", service_name=\"${service}\"} [$__rate_interval])) by (service_name)",
           "legendFormat": "{{service_name}}",
           "range": true,
@@ -223,6 +224,7 @@
             "uid": "webstore-metrics"
           },
           "editorMode": "code",
+          "exemplar": true,
           "expr": "sum(rate(latency_count{status_code=\"STATUS_CODE_ERROR\", service_name=\"${service}\"} [$__rate_interval])) by (service_name)",
           "legendFormat": "__auto",
           "range": true,
@@ -319,6 +321,7 @@
             "uid": "webstore-metrics"
           },
           "editorMode": "code",
+          "exemplar": true,
           "expr": "histogram_quantile(0.99, sum(rate(latency_bucket{span_kind=\"SPAN_KIND_SERVER\", service_name=\"${service}\"} [$__rate_interval])) by (service_name, le))",
           "legendFormat": "{{service_name}}",
           "range": true,
@@ -508,13 +511,13 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Service details",
   "uid": "2TP41t54k",
-  "version": 4,
+  "version": 1,
   "weekStart": ""
 }

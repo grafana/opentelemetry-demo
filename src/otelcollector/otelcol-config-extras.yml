@@ -1,17 +1,5 @@
 # extra settings to be merged into OpenTelemetry Collector configuration
 # do not delete this file
-receivers:
-  otlp:
-    protocols:
-      grpc:
-      http:
-        cors:
-          allowed_origins:
-            - "http://*"
-            - "https://*"
-  fluentforward:
-    endpoint: 0.0.0.0:8006
-
 exporters:
   logging:
     loglevel: debug
@@ -21,6 +9,9 @@ exporters:
       insecure: true
   prometheus:
     endpoint: "otelcol:9464"
+    enable_open_metrics: true
+  prometheusremotewrite:
+    endpoint: "https://prometheus:9090/api/v1/push"
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
 
@@ -47,5 +38,5 @@ service:
       processors: [batch]
       exporters: [prometheus]
     logs:
-      receivers: [otlp, fluentforward]
+      receivers: [otlp]
       exporters: [loki]

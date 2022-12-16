@@ -218,7 +218,7 @@ services:
           memory: 200M
     restart: always
     ports:
-      - "${FEATURE_FLAG_SERVICE_PORT}"                                  # Feature Flag Service UI
+      - "${FEATURE_FLAG_SERVICE_PORT}:${FEATURE_FLAG_SERVICE_PORT}"                                  # Feature Flag Service UI
       - "${FEATURE_FLAG_GRPC_SERVICE_PORT}"                             # Feature Flag Service gRPC API
     environment:
       - FEATURE_FLAG_SERVICE_PORT
@@ -601,6 +601,7 @@ services:
       - --storage.tsdb.path=/prometheus
       - --web.enable-lifecycle
       - --web.route-prefix=/
+      - --enable-feature=exemplar-storage
     volumes:
       - ./src/prometheus/prometheus-config.yaml:/etc/prometheus/prometheus-config.yaml
     ports:
