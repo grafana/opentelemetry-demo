@@ -116,7 +116,7 @@
         ]
       },
       "gridPos": {
-        "h": 15,
+        "h": 17,
         "w": 16,
         "x": 0,
         "y": 0
@@ -142,7 +142,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(rate(latency_count{span_kind=\"SPAN_KIND_SERVER\"} [$__rate_interval])) by (service_name)",
+          "expr": "sum(rate(latency_count{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\"} [$__rate_interval])) by (service_name)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -172,27 +172,12 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.99, sum(rate(latency_bucket{span_kind=\"SPAN_KIND_SERVER\"} [$__rate_interval])) by (le, service_name))",
+          "expr": "histogram_quantile(0.99, sum(rate(latency_bucket{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\"} [$__rate_interval])) by (le, service_name))",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "webstore-metrics"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "sum(calls_total{}) by (service_name)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "D"
         }
       ],
       "title": "Services",
@@ -241,6 +226,6 @@
   "timezone": "",
   "title": "Services",
   "uid": "oa__ot54k",
-  "version": 8,
+  "version": 1,
   "weekStart": ""
 }

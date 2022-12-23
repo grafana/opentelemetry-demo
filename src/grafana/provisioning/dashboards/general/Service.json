@@ -45,7 +45,7 @@
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 50,
-            "gradientMode": "opacity",
+            "gradientMode": "hue",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -56,15 +56,15 @@
               "fill": "solid"
             },
             "lineWidth": 3,
-            "pointSize": 5,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -86,11 +86,42 @@
           },
           "unit": "reqps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ok"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
-        "w": 7,
+        "w": 10,
         "x": 0,
         "y": 0
       },
@@ -115,123 +146,29 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(rate(latency_count{span_kind=\"SPAN_KIND_SERVER\", service_name=\"${service}\"} [$__rate_interval])) by (service_name)",
-          "legendFormat": "{{service_name}}",
+          "expr": "sum(rate(latency_count{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\", service_name=\"${service}\"} [$__rate_interval])) by (service_name, status_code)",
+          "legendFormat": "{{status_code}}",
           "range": true,
           "refId": "A"
         }
       ],
       "title": "Rate",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "webstore-metrics"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 34,
-            "gradientMode": "hue",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 3,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "cps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "frontend"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 7,
-        "y": 0
-      },
-      "id": 2,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
+      "transformations": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "webstore-metrics"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum(rate(latency_count{status_code=\"STATUS_CODE_ERROR\", service_name=\"${service}\"} [$__rate_interval])) by (service_name)",
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
+          "id": "renameByRegex",
+          "options": {
+            "regex": "STATUS_CODE_ERROR",
+            "renamePattern": "error"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "STATUS_CODE_UNSET",
+            "renamePattern": "ok"
+          }
         }
       ],
-      "title": "Errors",
       "type": "timeseries"
     },
     {
@@ -267,7 +204,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -297,8 +234,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 7,
-        "x": 13,
+        "w": 8,
+        "x": 10,
         "y": 0
       },
       "id": 5,
@@ -307,7 +244,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -322,13 +259,38 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "histogram_quantile(0.99, sum(rate(latency_bucket{span_kind=\"SPAN_KIND_SERVER\", service_name=\"${service}\"} [$__rate_interval])) by (service_name, le))",
-          "legendFormat": "{{service_name}}",
+          "expr": "histogram_quantile(0.99, sum(rate(latency_bucket{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\", service_name=\"${service}\"} [$__rate_interval])) by (service_name, le))",
+          "legendFormat": "p99",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "webstore-metrics"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "histogram_quantile(0.50, sum(rate(latency_bucket{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\", service_name=\"${service}\"} [$__rate_interval])) by (service_name, le))",
+          "hide": false,
+          "legendFormat": "p50",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "webstore-metrics"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(latency_sum{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\", service_name=\"${service}\"} [$__rate_interval])) / sum(rate(latency_count{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\", service_name=\"${service}\"} [$__rate_interval]))",
+          "hide": false,
+          "legendFormat": "avg",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "title": "Duration p99",
+      "title": "Duration",
       "type": "timeseries"
     },
     {
@@ -338,7 +300,7 @@
       },
       "gridPos": {
         "h": 11,
-        "w": 12,
+        "w": 10,
         "x": 0,
         "y": 8
       },
@@ -408,7 +370,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Value"
+              "options": "Requests"
             },
             "properties": [
               {
@@ -420,13 +382,29 @@
                 "value": "reqps"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errors"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "lcd-gauge"
+              },
+              {
+                "id": "unit",
+                "value": "cps"
+              }
+            ]
           }
         ]
       },
       "gridPos": {
         "h": 11,
         "w": 8,
-        "x": 12,
+        "x": 10,
         "y": 8
       },
       "id": 9,
@@ -449,25 +427,51 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(rate(traces_service_graph_request_total{client=\"${service}\"} [$__rate_interval])) by (server)",
+          "expr": "sum(rate(traces_service_graph_request_total{client=\"${service}\"} [5m])) by (server)",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "webstore-metrics"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(rate(traces_service_graph_request_total{client=\"${service}\", failed=\"true\"} [5m])) by (server)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B"
         }
       ],
       "title": "Downstream services",
       "transformations": [
         {
+          "id": "joinByField",
+          "options": {
+            "byField": "server",
+            "mode": "outer"
+          }
+        },
+        {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Time": true
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true
             },
             "indexByName": {},
             "renameByName": {
               "Value": "Rate",
+              "Value #A": "Requests",
+              "Value #B": "Errors",
               "server": "Service"
             }
           }
@@ -483,7 +487,7 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "frontend",
           "value": "frontend"
         },
@@ -518,6 +522,6 @@
   "timezone": "",
   "title": "Service details",
   "uid": "2TP41t54k",
-  "version": 1,
+  "version": 5,
   "weekStart": ""
 }

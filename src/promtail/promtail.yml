@@ -17,6 +17,6 @@ scrape_configs:
     # use container name to create a loki label
     relabel_configs:
       - source_labels: ["__meta_docker_container_name"]
-        regex: "/(\\w+)(-)?(\\w+)?"
-        replacement: "$1$3"
+        regex: "/(\\w+)(-)?(\\w+)(-)?(\\w+)?"
+        replacement: "$1$3$5"
         target_label: "service_name"

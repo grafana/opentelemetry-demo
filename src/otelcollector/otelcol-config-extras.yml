@@ -10,8 +10,6 @@ exporters:
   prometheus:
     endpoint: "otelcol:9464"
     enable_open_metrics: true
-  prometheusremotewrite:
-    endpoint: "https://prometheus:9090/api/v1/push"
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
 

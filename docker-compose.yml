@@ -559,6 +559,8 @@ services:
     ports:
       - "${GRAFANA_SERVICE_PORT}:3000"
     logging: *logging
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   # OpenTelemetry Collector
   otelcol:
