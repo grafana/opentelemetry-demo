@@ -5,7 +5,7 @@ apps:
     org_id: 1
     org_name: Grafana
     jsonData:
-      api_endpoint: http://host.docker.internal:18000
+      api_endpoint: http://faroendpoint:8000
       org_id: 1
       stack_id: 1
     secureJsonData:

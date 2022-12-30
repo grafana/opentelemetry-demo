@@ -699,3 +699,31 @@ services:
       # to read container labels and logs
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/containers:/var/lib/docker/containers
+  farodb:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'faro'
+      MYSQL_USER: 'faro'
+      MYSQL_PASSWORD: 'my-secret-pw'
+      MYSQL_ROOT_PASSWORD: 'my-secret-pw'
+    expose:
+      - '3306'
+  faroendpoint:
+    image: us.gcr.io/kubernetes-dev/frontend-monitoring:3c7f7ba
+    command: ["-db_connection_string=faro:my-secret-pw@tcp(farodb:3306)/faro",
+      "-enable_config_api",
+      "-enable_collector_endpoint",
+      "-public_collect_endpoint_url=http://localhost:18000/collect",
+      "-exporter.otlp-gateway=http://otelcol:4318"]
+    volumes:
+      - ./src/faroendpoint/migrations/100_data.up.sql:/app/migrations/mysql/100_data.up.sql
+    ports:
+      - '18000:8000'
+      - '18081:8081'
+    expose:
+      - '8000'
+      - '8081'
+    restart: always
+    depends_on:
+      - 'farodb'
