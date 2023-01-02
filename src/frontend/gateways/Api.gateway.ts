@@ -1,3 +1,4 @@
+import { faro } from '@grafana/faro-web-sdk';
 import { Ad, Address, Cart, CartItem, Money, PlaceOrderRequest, Product } from '../protos/demo';
 import { IProductCart, IProductCartItem, IProductCheckout } from '../types/Cart';
 import request from '../utils/Request';
@@ -66,7 +67,13 @@ const ApiGateway = () => ({
     return request<Product>({
       url: `${basePath}/products/${productId}`,
       queryParams: { currencyCode },
-    });
+    }).then(product => {
+      console.log('get product', product);
+      return product;
+    }).catch(error => {
+      faro.api.pushError(error);
+      return Promise.reject(error);
+    })
   },
   listRecommendations(productIds: string[], currencyCode: string) {
     return request<Product[]>({

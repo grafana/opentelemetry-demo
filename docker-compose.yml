@@ -291,6 +291,7 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT
       - ENV_PLATFORM
       - OTEL_SERVICE_NAME=frontend
+      - WEB_APP_SERVICE_NAME=web-app
       - PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
       - GRAFANA_FARO_ENDPOINT
     depends_on:
@@ -690,6 +691,9 @@ services:
     command: ["-config.file=/etc/tempo.yaml"]
     volumes:
       - ./src/tempo/tempo.yaml:/etc/tempo.yaml
+    ports:
+      - 3200  # tempo
+      - 4317  # otlp grpc receiver
   promtail:
     image: grafana/promtail:2.6.1
     volumes:
