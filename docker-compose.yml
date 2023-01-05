@@ -551,7 +551,7 @@ services:
 
   # Grafana
   grafana:
-    image: grafana/grafana:9.3.0
+    image: grafana/grafana-dev:9.4.0-95110pre-ubuntu
     container_name: grafana
     volumes:
       - ./src/grafana/grafana.ini:/etc/grafana/grafana.ini
