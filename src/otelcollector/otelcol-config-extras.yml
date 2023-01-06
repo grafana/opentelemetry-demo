@@ -14,6 +14,13 @@ exporters:
     endpoint: http://loki:3100/loki/api/v1/push
 
 processors:
+  transform/grafanacloudapm:
+    trace_statements:
+      - context: span
+        statements:
+          - replace_match(attributes["http.target"], "/api/products/*", "/api/products/{productId}")
+          - set(name, Concat([attributes["http.method"], attributes["http.target"]], " ")) where name == "HTTP GET" and attributes["http.target"] != nil
+          - set(name, Concat([attributes["http.method"], attributes["http.target"]], " ")) where name == "HTTP POST" and attributes["http.target"] != nil
   batch:
   spanmetrics:
     metrics_exporter: prometheus
@@ -29,7 +36,7 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [spanmetrics, servicegraph, batch]
+      processors: [transform/grafanacloudapm, spanmetrics, servicegraph, batch]
       exporters: [otlp]
     metrics:
       receivers: [otlp]
