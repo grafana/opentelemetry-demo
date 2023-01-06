@@ -47,3 +47,5 @@ storage:
     pool:
       max_workers: 100 # the worker pool mainly drives querying, but is also used for polling the blocklist
       queue_depth: 10000
+overrides:
+  max_search_bytes_per_trace: 10000
