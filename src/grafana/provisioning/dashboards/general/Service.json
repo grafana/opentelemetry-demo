@@ -245,6 +245,20 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              }
+            ]
           }
         ]
       },
@@ -713,6 +727,6 @@
   "timezone": "",
   "title": "Service details",
   "uid": "2TP41t54k",
-  "version": 7,
+  "version": 8,
   "weekStart": ""
 }
