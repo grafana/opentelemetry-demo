@@ -96,7 +96,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "dark-red",
+                  "fixedColor": "#cf0e5b",
                   "mode": "fixed"
                 }
               }
@@ -111,7 +111,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "green",
+                  "fixedColor": "#6ec4cb",
                   "mode": "fixed"
                 }
               }
@@ -230,7 +230,23 @@
           },
           "unit": "ms"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p99"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#e2a52b",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -697,6 +713,6 @@
   "timezone": "",
   "title": "Service details",
   "uid": "2TP41t54k",
-  "version": 3,
+  "version": 7,
   "weekStart": ""
 }
