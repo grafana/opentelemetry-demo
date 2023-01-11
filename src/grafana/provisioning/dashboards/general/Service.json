@@ -121,7 +121,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 11,
+        "w": 8,
         "x": 0,
         "y": 0
       },
@@ -145,30 +145,27 @@
             "uid": "webstore-metrics"
           },
           "editorMode": "code",
+          "expr": "sum(rate(latency_count{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\", status_code=\"STATUS_CODE_ERROR\", service_name=\"${service}\"} [$__rate_interval])) by (service_name, status_code)",
+          "hide": false,
+          "legendFormat": "error",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "webstore-metrics"
+          },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(rate(latency_count{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\", service_name=\"${service}\"} [$__rate_interval])) by (service_name, status_code)",
-          "legendFormat": "{{status_code}}",
+          "expr": "sum(rate(latency_count{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\", status_code=~\"STATUS_CODE_UNSET|STATUS_CODE_OK\", service_name=\"${service}\"} [$__rate_interval])) by (service_name, status_code)",
+          "legendFormat": "ok",
           "range": true,
           "refId": "A"
         }
       ],
       "title": "Rate",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "STATUS_CODE_ERROR",
-            "renamePattern": "error"
-          }
-        },
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "STATUS_CODE_UNSET",
-            "renamePattern": "ok"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -264,8 +261,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 13,
-        "x": 11,
+        "w": 8,
+        "x": 8,
         "y": 0
       },
       "id": 5,
@@ -301,9 +298,9 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "histogram_quantile(0.50, sum(rate(latency_bucket{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\", service_name=\"${service}\"} [$__rate_interval])) by (service_name, le))",
+          "expr": "histogram_quantile(0.95, sum(rate(latency_bucket{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\", service_name=\"${service}\"} [$__rate_interval])) by (service_name, le))",
           "hide": false,
-          "legendFormat": "p50",
+          "legendFormat": "p95",
           "range": true,
           "refId": "C"
         },
@@ -322,6 +319,94 @@
       ],
       "title": "Duration",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "webstore-metrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 12,
+      "options": {
+        "calculate": true,
+        "calculation": {
+          "xBuckets": {
+            "mode": "size"
+          },
+          "yBuckets": {
+            "mode": "size",
+            "value": ""
+          }
+        },
+        "cellGap": 1,
+        "cellValues": {},
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "mode": "scheme",
+          "reverse": true,
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "tooltip": {
+          "show": true,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false,
+          "unit": "ms"
+        }
+      },
+      "pluginVersion": "9.4.0-95110pre",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "webstore-metrics"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(latency_bucket{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\", service_name=\"${service}\"} [$__rate_interval])) by (le)",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Duration Heatmap",
+      "type": "heatmap"
     },
     {
       "datasource": {
@@ -692,7 +777,7 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "frontend",
           "value": "frontend"
         },
@@ -727,6 +812,6 @@
   "timezone": "",
   "title": "Service details",
   "uid": "2TP41t54k",
-  "version": 8,
+  "version": 2,
   "weekStart": ""
 }
