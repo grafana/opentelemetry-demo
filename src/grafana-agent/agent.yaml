@@ -1,0 +1,31 @@
+metrics:
+  wal_directory: /tmp/wal
+  configs:
+    - name: default
+      remote_write:
+        - url: http://prometheus:9090/api/v1/write
+
+traces:
+  configs:
+    - name: default
+      remote_write:
+        - endpoint: tempo:4317
+          insecure: true
+      receivers:
+        otlp:
+          protocols:
+            grpc:
+            http:
+      service_graphs:
+        enabled: true
+      spanmetrics:
+        dimensions:
+          - name: process.runtime.name
+            default: UNSET
+          - name: telemetry.sdk.language
+            default: UNSET
+        metrics_instance: default
+
+integrations:
+  agent:
+    enabled: true

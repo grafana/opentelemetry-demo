@@ -4,7 +4,7 @@ exporters:
   logging:
     loglevel: debug
   otlp:
-    endpoint: tempo:4317
+    endpoint: grafana-agent:4317
     tls:
       insecure: true
   prometheus:
@@ -36,7 +36,7 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [transform/grafanacloudapm, spanmetrics, servicegraph, batch]
+      processors: [transform/grafanacloudapm, batch]
       exporters: [otlp]
     metrics:
       receivers: [otlp]

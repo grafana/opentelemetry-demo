@@ -124,6 +124,7 @@
       "id": 2,
       "options": {
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -133,7 +134,7 @@
         "frameIndex": 1,
         "showHeader": true
       },
-      "pluginVersion": "9.3.0",
+      "pluginVersion": "9.4.0-95110pre",
       "targets": [
         {
           "datasource": {
@@ -142,7 +143,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(rate(latency_count{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\"} [$__rate_interval])) by (service_name)",
+          "expr": "sum(rate(${metric_prefix}latency_count{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\"} [$__rate_interval])) by (service_name)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -157,7 +158,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(rate(latency_count{status_code=\"STATUS_CODE_ERROR\"} [$__rate_interval])) by (service_name)",
+          "expr": "sum(rate(${metric_prefix}latency_count{status_code=\"STATUS_CODE_ERROR\"} [$__rate_interval])) by (service_name)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -172,7 +173,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.99, sum(rate(latency_bucket{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\"} [$__rate_interval])) by (le, service_name))",
+          "expr": "histogram_quantile(0.99, sum(rate(${metric_prefix}latency_bucket{span_kind=~\"SPAN_KIND_SERVER|SPAN_KIND_CONSUMER\"} [$__rate_interval])) by (le, service_name))",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -212,11 +213,33 @@
       "type": "table"
     }
   ],
+  "revision": 1,
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "traces_spanmetrics_",
+          "value": "traces_spanmetrics_"
+        },
+        "hide": 0,
+        "label": "Metric name prefix",
+        "name": "metric_prefix",
+        "options": [
+          {
+            "selected": true,
+            "text": "traces_spanmetrics_",
+            "value": "traces_spanmetrics_"
+          }
+        ],
+        "query": "traces_spanmetrics_",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
   },
   "time": {
     "from": "now-15m",
