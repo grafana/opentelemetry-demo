@@ -605,6 +605,7 @@ services:
       - --web.enable-lifecycle
       - --web.route-prefix=/
       - --enable-feature=exemplar-storage
+      - --web.enable-remote-write-receiver
     volumes:
       - ./src/prometheus/prometheus-config.yaml:/etc/prometheus/prometheus-config.yaml
     ports:
@@ -694,6 +695,8 @@ services:
     ports:
       - 3200  # tempo
       - 4317  # otlp grpc receiver
+    depends_on:
+      - prometheus
   promtail:
     image: grafana/promtail:2.6.1
     volumes:

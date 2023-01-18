@@ -36,7 +36,7 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [transform/grafanacloudapm, spanmetrics, servicegraph, batch]
+      processors: [transform/grafanacloudapm, batch]
       exporters: [otlp]
     metrics:
       receivers: [otlp]
