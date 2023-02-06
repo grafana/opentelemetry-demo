@@ -12,7 +12,7 @@ steps:
 - name: docker
   image: plugins/docker
   settings:
-    dockerfile: Dockerfile
+    dockerfile: ./src/frontend/Dockerfile
     repo: integration-artifacts/otel-demo-frontend
     tags: latest
     context: ./src/frontend/
@@ -45,6 +45,6 @@ get:
 
 ---
 kind: signature
-hmac: 1cc8ac1e3aacbe31df1534072737437e17fbcfdf0dbff4e09eaca2519e117b1e
+hmac: d3e47cc0d4c1ebb19c0be77f19cd9eb4d350970f8de7de146da85ebf3393d934
 
 ...
