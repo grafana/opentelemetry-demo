@@ -13,7 +13,7 @@ steps:
   image: plugins/docker
   settings:
     dockerfile: ./src/frontend/Dockerfile
-    repo: integration-artifacts/otel-demo-frontend
+    repo: cerebralnoodle/otel-faro-dem
     tags: latest
     context: ./src/frontend/
     password:
