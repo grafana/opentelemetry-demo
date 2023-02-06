@@ -2,6 +2,12 @@
 kind: pipeline
 type: docker
 name: docker-push
+
+trigger:
+  event:
+    include:
+    - push
+
 steps:
 - name: docker
   image: plugins/docker
@@ -15,10 +21,9 @@ steps:
       from_secret: docker_password
     username:
       from_secret: docker_username
-trigger:
-  event:
-    include:
-    - push
+  when:
+    ref:
+      - refs/heads/*
 
 ---
 kind: secret
@@ -44,6 +49,6 @@ get:
 
 ---
 kind: signature
-hmac: 0bd918abdb02f4cbe034bc2a08eda24a2fd1ebbec39836ab95aa66b7fd4f2cae
+hmac: 1cc8ac1e3aacbe31df1534072737437e17fbcfdf0dbff4e09eaca2519e117b1e
 
 ...
