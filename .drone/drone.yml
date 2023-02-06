@@ -36,6 +36,18 @@ get:
   name: pat
   path: infra/data/ci/github/grafanabot
 ---
+get:
+  name: username
+  path: infra/data/ci/docker_hub
+kind: secret
+name: docker_username
+---
+get:
+  name: password
+  path: infra/data/ci/docker_hub
+kind: secret
+name: docker_password
+---
 kind: secret
 name: dockerconfigjson
 
