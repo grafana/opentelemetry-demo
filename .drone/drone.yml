@@ -1,3 +1,4 @@
+---
 kind: pipeline
 type: docker
 name: docker-push
@@ -43,6 +44,6 @@ get:
 
 ---
 kind: signature
-hmac: 4ee6283b599ae6c675ac2a99fee922aab0da6cf79b3f3815f34b3f32f7068774
+hmac: 0bd918abdb02f4cbe034bc2a08eda24a2fd1ebbec39836ab95aa66b7fd4f2cae
 
 ...
