@@ -15,7 +15,7 @@ steps:
     dockerfile: Dockerfile
     repo: integration-artifacts/otel-demo-frontend
     tags: latest
-    context: /src/frontend/
+    context: ./src/frontend/
     password:
       from_secret: docker_password
     username:
