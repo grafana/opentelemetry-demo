@@ -5,7 +5,7 @@ COPY ./package*.json ./
 RUN npm install && npm ci
 RUN apk add --no-cache libc6-compat protobuf-dev protoc
 COPY . .
-COPY ../../pb ./pb
+COPY ./pb ./pb
 RUN npm run grpc:generate
 RUN npm run build
 
