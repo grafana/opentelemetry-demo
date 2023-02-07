@@ -9,11 +9,24 @@ trigger:
     - push
 
 steps:
-- name: docker
+- name: docker-test-1
   image: plugins/docker
   settings:
     dockerfile: ./src/frontend/Dockerfile
     repo: cerebralnoodle/otel-faro-demo
+    daemon_off: true
+    tags: latest
+    context: ./src/frontend/
+    password:
+      from_secret: docker_password
+    username:
+      from_secret: docker_username
+- name: docker-test-2
+  image: plugins/docker
+  settings:
+    dockerfile: ./src/frontend/Dockerfile
+    repo: cerebralnoodle/otel-faro-demo
+    dry_run: true
     tags: latest
     context: ./src/frontend/
     password:
