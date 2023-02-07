@@ -32,8 +32,8 @@ const ProductDetail: NextPage = () => {
 
   useEffect(() => {
     faro.api?.pushEvent('page', {
-      'name': 'product/[productId]',
-      'productId': productId,
+      name: 'product/[productId]',
+      productId,
     });
   });
 
@@ -55,8 +55,8 @@ const ProductDetail: NextPage = () => {
 
   const onAddItem = useCallback(async () => {
     faro.api?.pushEvent('add-to-cart', {
-      'productId': productId,
-      'quantity': quantity as unknown as string,
+      productId,
+      quantity: quantity.toString(),
     });
 
     await addItem({

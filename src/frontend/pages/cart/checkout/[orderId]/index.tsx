@@ -19,8 +19,8 @@ const Checkout: NextPage = () => {
 
   useEffect(() => {
     faro.api?.pushEvent('page', {
-      'name': 'checkout/[orderId]',
-      'orderId': query.orderId as string,
+      name: 'checkout/[orderId]',
+      orderId: typeof query.orderId === 'string' ? query.orderId : query.orderId?.join('') ?? '',
     });
   });
 
