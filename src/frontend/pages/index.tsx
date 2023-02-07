@@ -32,7 +32,7 @@ const Home: NextPage = () => {
   );
 
   useEffect(() => {
-    faro.api.pushEvent('page', {
+    faro.api?.pushEvent('page', {
       'name': 'Home'
     });
   });
