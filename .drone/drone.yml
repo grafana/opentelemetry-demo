@@ -9,31 +9,17 @@ trigger:
     - push
 
 steps:
-- name: docker-test-1
+- name: docker
   image: plugins/docker
   settings:
     dockerfile: ./src/frontend/Dockerfile
     repo: cerebralnoodle/otel-faro-demo
-    daemon_off: true
     tags: latest
     context: ./src/frontend/
     password:
       from_secret: docker_password
     username:
       from_secret: docker_username
-- name: docker-test-2
-  image: plugins/docker
-  settings:
-    dockerfile: ./src/frontend/Dockerfile
-    repo: cerebralnoodle/otel-faro-demo
-    dry_run: true
-    tags: latest
-    context: ./src/frontend/
-    password:
-      from_secret: docker_password
-    username:
-      from_secret: docker_username
-
 ---
 kind: secret
 name: gcp_key
@@ -70,6 +56,6 @@ get:
 
 ---
 kind: signature
-hmac: ebb688a36446f55ba1e0916983e42d06aebc8993a029584bfb68fa9f6db11a19
+hmac: 98827243ab3d5dcdd24463a1a5f098007f88e95ac620ff3da8e3f4f0057c604e
 
 ...
