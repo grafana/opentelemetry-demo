@@ -17,7 +17,7 @@ const Cart: NextPage = () => {
 
   useEffect(() => {
     faro.api?.pushEvent('page', {
-      'name': 'Cart',
+      name: 'Cart',
     });
   });
 
