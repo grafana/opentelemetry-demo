@@ -10,16 +10,16 @@ trigger:
 
 steps:
 - name: docker
-  image: plugins/docker
+  image: plugins/gcr
   settings:
-    dockerfile: ./src/frontend/Dockerfile
-    repo: cerebralnoodle/otel-faro-demo
-    tags: latest
+    dockerfile: ./src/frontend/Dockerfile.ci
+    repo: raintank-production/opentelemetry-demo
+    tags:
+      - latest
+      - ${DRONE_COMMIT_SHA:0:7}
     context: ./src/frontend/
-    password:
-      from_secret: docker_password
-    username:
-      from_secret: docker_username
+    json_key:
+      from_secret: gcr_credentials
 ---
 kind: secret
 name: gcp_key
@@ -36,16 +36,10 @@ get:
   path: infra/data/ci/github/grafanabot
 ---
 get:
-  name: username
-  path: infra/data/ci/docker_hub
+  name: service-account
+  path: infra/data/ci/gcr-admin
 kind: secret
-name: docker_username
----
-get:
-  name: password
-  path: infra/data/ci/docker_hub
-kind: secret
-name: docker_password
+name: gcr_credentials
 ---
 kind: secret
 name: dockerconfigjson
@@ -56,6 +50,6 @@ get:
 
 ---
 kind: signature
-hmac: 98827243ab3d5dcdd24463a1a5f098007f88e95ac620ff3da8e3f4f0057c604e
+hmac: b24c8ba4d19997256788fc21f44f1db8ae4aa5a914ad929dffd1121d6bfdcc30
 
 ...
