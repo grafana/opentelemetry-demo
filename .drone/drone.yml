@@ -4,9 +4,14 @@ type: docker
 name: docker-push
 
 trigger:
+  branch:
+    - grafana
   event:
+    exclude:
+      - pull_request
+      - tag
     include:
-    - push
+      - push
 
 steps:
 - name: docker
@@ -50,6 +55,6 @@ get:
 
 ---
 kind: signature
-hmac: b24c8ba4d19997256788fc21f44f1db8ae4aa5a914ad929dffd1121d6bfdcc30
+hmac: ae60a297907d7a542c0c8bc769f516de5bd479c33bc2c8d8c826df218ab286c5
 
 ...
