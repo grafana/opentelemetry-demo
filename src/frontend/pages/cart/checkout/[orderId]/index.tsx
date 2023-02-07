@@ -18,7 +18,7 @@ const Checkout: NextPage = () => {
   const { items = [], shippingAddress } = JSON.parse((query.order || '{}') as string) as IProductCheckout;
 
   useEffect(() => {
-    faro.api.pushEvent('page', {
+    faro.api?.pushEvent('page', {
       'name': 'checkout/[orderId]',
       'orderId': query.orderId as string,
     });

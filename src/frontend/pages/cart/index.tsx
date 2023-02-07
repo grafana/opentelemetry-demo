@@ -1,4 +1,6 @@
+import { faro } from '@grafana/faro-web-sdk';
 import { NextPage } from 'next';
+import { useEffect } from 'react';
 import Footer from '../../components/Footer';
 import Layout from '../../components/Layout';
 import Recommendations from '../../components/Recommendations';
@@ -7,8 +9,6 @@ import CartDetail from '../../components/Cart/CartDetail';
 import EmptyCart from '../../components/Cart/EmptyCart';
 import { useCart } from '../../providers/Cart.provider';
 import AdProvider from '../../providers/Ad.provider';
-import { faro } from '@grafana/faro-web-sdk';
-import { useEffect } from 'react';
 
 const Cart: NextPage = () => {
   const {
@@ -16,7 +16,7 @@ const Cart: NextPage = () => {
   } = useCart();
 
   useEffect(() => {
-    faro.api.pushEvent('page', {
+    faro.api?.pushEvent('page', {
       'name': 'Cart',
     });
   });

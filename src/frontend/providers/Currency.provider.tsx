@@ -36,11 +36,11 @@ const CurrencyProvider = ({ children }: IProps) => {
     setSelectedCurrency(currencyCode);
     SessionGateway.setSessionValue('currencyCode', currencyCode);
 
-    faro.api.pushEvent('currency_select', {
+    faro.api?.pushEvent('currency_select', {
       'currency': currencyCode as string,
     });
 
-    faro.api.pushLog([`Currency ${currencyCode} was selected`]);
+    faro.api?.pushLog([`Currency ${currencyCode} was selected`]);
   }, []);
 
   const currencyCodeList = currencyCodeListUnsorted.sort();
