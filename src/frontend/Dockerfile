@@ -1,28 +1,38 @@
-FROM node:18-alpine AS build
+FROM node:18-alpine AS deps
 RUN apk add --no-cache libc6-compat
+
 WORKDIR /app
-COPY ./package*.json ./
-RUN npm install && npm ci
+
+COPY ./src/frontend/package*.json ./
+RUN npm ci
+
+FROM node:18-alpine AS builder
 RUN apk add --no-cache libc6-compat protobuf-dev protoc
-COPY . .
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY ./pb ./pb
+COPY ./src/frontend .
+
 RUN npm run grpc:generate
 RUN npm run build
 
 FROM node:18-alpine AS runner
-RUN apk add --no-cache protobuf-dev protoc
 WORKDIR /app
+RUN apk add --no-cache protobuf-dev protoc
+
 ENV NODE_ENV=production
+
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
-COPY --from=build /app/next.config.js ./
-COPY --from=build /app/utils/telemetry/Instrumentation.js ./
-COPY --from=build /app/public ./public
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/utils/telemetry/Instrumentation.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+COPY --from=deps /app/node_modules ./node_modules
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
