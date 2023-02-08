@@ -1,0 +1,61 @@
+---
+kind: pipeline
+type: docker
+name: docker-push
+
+trigger:
+  branch:
+    - grafana
+  event:
+    exclude:
+      - pull_request
+      - tag
+    include:
+      - push
+
+steps:
+- name: docker
+  image: plugins/gcr
+  settings:
+    dockerfile: ./src/frontend/Dockerfile.ci
+    registry: us.gcr.io
+    repo: raintank-production/opentelemetry-demo
+    tags:
+      - latest
+      - ${DRONE_COMMIT_SHA:0:7}
+    context: ./src/frontend/
+    json_key:
+      from_secret: gcr_credentials
+---
+kind: secret
+name: gcp_key
+
+get:
+    name: gcp_key
+    path: infra/data/ci/drone-plugins
+---
+kind: secret
+name: gh_token
+
+get:
+  name: pat
+  path: infra/data/ci/github/grafanabot
+---
+get:
+  name: service-account
+  path: infra/data/ci/gcr-admin
+kind: secret
+name: gcr_credentials
+---
+kind: secret
+name: dockerconfigjson
+
+get:
+  path: secret/data/common/gcr
+  name: .dockerconfigjson
+
+---
+kind: signature
+hmac: e982b139df69a23062ac82a6308d98deab4da7a26d9b364f6e180dc8afd5af35
+
+...
