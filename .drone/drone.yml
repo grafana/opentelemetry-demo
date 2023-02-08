@@ -3,17 +3,13 @@ kind: pipeline
 type: docker
 name: docker-push
 
-# trigger:
-#   branch:
-#     - grafana
-#   event:
-#     exclude:
-#       - pull_request
-#       - tag
-#     include:
-#       - push
 trigger:
+  branch:
+    - grafana
   event:
+    exclude:
+      - pull_request
+      - tag
     include:
       - push
 
@@ -60,6 +56,6 @@ get:
 
 ---
 kind: signature
-hmac: 772be64e34ef589e0d33ffab1d513c71001ef858f36d34f44fc922521961b4dd
+hmac: e982b139df69a23062ac82a6308d98deab4da7a26d9b364f6e180dc8afd5af35
 
 ...
