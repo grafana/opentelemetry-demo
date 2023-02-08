@@ -22,6 +22,7 @@ steps:
   image: plugins/gcr
   settings:
     dockerfile: ./src/frontend/Dockerfile.ci
+    registry: us.gcr.io
     repo: raintank-production/opentelemetry-demo
     tags:
       - latest
@@ -59,6 +60,6 @@ get:
 
 ---
 kind: signature
-hmac: 6067635a30fa57f5e585a0d0d9c805d9294fd05a61d045c6d9ab30e955991b35
+hmac: 772be64e34ef589e0d33ffab1d513c71001ef858f36d34f44fc922521961b4dd
 
 ...
