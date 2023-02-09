@@ -1,12 +1,11 @@
 import '../styles/globals.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import App, { AppContext, AppProps } from 'next/app';
-import { getCookie } from 'cookies-next';
 import CurrencyProvider from '../providers/Currency.provider';
 import CartProvider from '../providers/Cart.provider';
 import { ThemeProvider } from 'styled-components';
 import Theme from '../styles/Theme';
-import Faro from '../utils/telemetry/FaroTracer';
+import Honeycomb from '../utils/telemetry/HoneycombTracer';
 
 declare global {
   interface Window {
@@ -20,8 +19,7 @@ declare global {
 }
 
 if (typeof window !== 'undefined') {
-  const collector = getCookie('faroCollectorUrl')?.toString() || '';
-  Faro(collector);
+  Honeycomb();
 }
 
 const queryClient = new QueryClient();
