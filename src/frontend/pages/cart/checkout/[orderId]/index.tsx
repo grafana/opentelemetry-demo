@@ -1,8 +1,8 @@
-import { faro } from '@grafana/faro-web-sdk';
+// import { faro } from '@grafana/faro-web-sdk';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import Ad from '../../../../components/Ad';
 import Button from '../../../../components/Button';
 import CheckoutItem from '../../../../components/CheckoutItem';

@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useQuery } from 'react-query';
 import Ad from '../../../components/Ad';
 import Footer from '../../../components/Footer';
@@ -16,7 +16,7 @@ import AdProvider from '../../../providers/Ad.provider';
 import { useCart } from '../../../providers/Cart.provider';
 import * as S from '../../../styles/ProductDetail.styled';
 import { useCurrency } from '../../../providers/Currency.provider';
-import { faro } from '@grafana/faro-web-sdk';
+// import { faro } from '@grafana/faro-web-sdk';
 
 const quantityOptions = new Array(10).fill(0).map((_, i) => i + 1);
 

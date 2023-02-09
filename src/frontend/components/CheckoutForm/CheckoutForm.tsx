@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { CypressFields } from '../../utils/Cypress';
 import Input from '../Input';
 import * as S from './CheckoutForm.styled';
-import { faro } from '@grafana/faro-web-sdk';
+// import { faro } from '@grafana/faro-web-sdk';
 
 const currentYear = new Date().getFullYear();
 const yearList = Array.from(new Array(20), (v, i) => i + currentYear);
@@ -194,7 +194,7 @@ const CheckoutForm = ({ onSubmit }: IProps) => {
         <S.CartButton
           data-cy={CypressFields.CheckoutPlaceOrder}
           type="submit"
-          onClick={() => faro.api.pushError(new Error('Order not visible enough'))}
+          // onClick={() => faro.api.pushError(new Error('Order not visible enough'))}
         >
           Place Order
         </S.CartButton>

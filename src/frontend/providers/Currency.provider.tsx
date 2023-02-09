@@ -1,4 +1,4 @@
-import { faro } from '@grafana/faro-web-sdk';
+// import { faro } from '@grafana/faro-web-sdk';
 import { createContext, useCallback, useContext, useMemo, useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import ApiGateway from '../gateways/Api.gateway';
