@@ -7,6 +7,9 @@ import { WebTracerProvider, BatchSpanProcessor } from '@opentelemetry/sdk-trace-
 import { ZoneContextManager } from '@opentelemetry/context-zone';
 import { Resource }  from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { DocumentLoadInstrumentation } from '@opentelemetry/instrumentation-document-load';
+import { UserInteractionInstrumentation } from '@opentelemetry/instrumentation-user-interaction';
+import { registerInstrumentations } from '@opentelemetry/instrumentation';
 
 const Honeycomb = () => {
   const exporter = new OTLPTraceExporter({
@@ -20,6 +23,15 @@ const Honeycomb = () => {
   provider.addSpanProcessor(new BatchSpanProcessor(exporter));
   provider.register({
     contextManager: new ZoneContextManager()
+  });
+
+  registerInstrumentations({
+    instrumentations: [
+      new DocumentLoadInstrumentation(),
+      new UserInteractionInstrumentation({
+        eventNames: ['submit', 'click', 'keypress'],
+      }),
+    ],
   });
 };
 

@@ -17,12 +17,12 @@ const Checkout: NextPage = () => {
   const { query } = useRouter();
   const { items = [], shippingAddress } = JSON.parse((query.order || '{}') as string) as IProductCheckout;
 
-  useEffect(() => {
-    faro.api.pushEvent('page', {
-      'name': 'checkout/[orderId]',
-      'orderId': query.orderId as string,
-    });
-  });
+  // useEffect(() => {
+  //   faro.api.pushEvent('page', {
+  //     'name': 'checkout/[orderId]',
+  //     'orderId': query.orderId as string,
+  //   });
+  // });
 
   return (
     <AdProvider

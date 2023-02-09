@@ -15,11 +15,11 @@ const Cart: NextPage = () => {
     cart: { items },
   } = useCart();
 
-  useEffect(() => {
-    faro.api.pushEvent('page', {
-      'name': 'Cart',
-    });
-  });
+  // useEffect(() => {
+  //   faro.api.pushEvent('page', {
+  //     'name': 'Cart',
+  //   });
+  // });
 
   return (
     <AdProvider

@@ -31,11 +31,11 @@ const Home: NextPage = () => {
     ApiGateway.listProducts(selectedCurrency)
   );
 
-  useEffect(() => {
-    faro.api.pushEvent('page', {
-      'name': 'Home'
-    });
-  });
+  // useEffect(() => {
+  //   faro.api.pushEvent('page', {
+  //     'name': 'Home'
+  //   });
+  // });
 
   return (
     <Layout>

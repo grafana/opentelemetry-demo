@@ -30,12 +30,12 @@ const ProductDetail: NextPage = () => {
   const { selectedCurrency } = useCurrency();
   const productId = query.productId as string;
 
-  useEffect(() => {
-    faro.api.pushEvent('page', {
-      'name': 'product/[productId]',
-      'productId': productId,
-    });
-  });
+  // useEffect(() => {
+  //   faro.api.pushEvent('page', {
+  //     'name': 'product/[productId]',
+  //     'productId': productId,
+  //   });
+  // });
 
   const {
     data: {
@@ -54,10 +54,10 @@ const ProductDetail: NextPage = () => {
   );
 
   const onAddItem = useCallback(async () => {
-    faro.api.pushEvent('add-to-cart', {
-      'productId': productId,
-      'quantity': quantity as unknown as string,
-    });
+    // faro.api.pushEvent('add-to-cart', {
+    //   'productId': productId,
+    //   'quantity': quantity as unknown as string,
+    // });
 
     await addItem({
       productId,
