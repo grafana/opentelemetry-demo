@@ -56,7 +56,7 @@ const ProductDetail: NextPage = () => {
   const onAddItem = useCallback(async () => {
     faro.api.pushEvent('add-to-cart', {
       'productId': productId,
-      'quantity': quantity as unknown as string,
+      'quantity': String(quantity),
     });
 
     await addItem({
