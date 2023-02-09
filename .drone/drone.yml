@@ -3,13 +3,9 @@ kind: pipeline
 type: docker
 name: docker-push
 
+# TODO - revert
 trigger:
-  branch:
-    - grafana
   event:
-    exclude:
-      - pull_request
-      - tag
     include:
       - push
 
@@ -21,7 +17,7 @@ steps:
     registry: us.gcr.io
     repo: raintank-production/opentelemetry-demo
     tags:
-      - latest
+      - honeycomb
       - ${DRONE_COMMIT_SHA:0:7}
     context: ./src/frontend/
     json_key:
@@ -56,6 +52,6 @@ get:
 
 ---
 kind: signature
-hmac: e982b139df69a23062ac82a6308d98deab4da7a26d9b364f6e180dc8afd5af35
+hmac: 177e5ca28c7836685a3b3bd6491b932cf9d68d8345ea8a08bf87df6216a1a4ec
 
 ...
