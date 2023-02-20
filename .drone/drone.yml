@@ -19,7 +19,7 @@ steps:
   settings:
     dockerfile: ./src/frontend/Dockerfile.ci
     registry: us.gcr.io
-    repo: raintank-production/opentelemetry-demo
+    repo: kubernetes-dev/opentelemetry-demo
     tags:
       - latest
       - ${DRONE_COMMIT_SHA:0:7}
@@ -56,6 +56,6 @@ get:
 
 ---
 kind: signature
-hmac: e982b139df69a23062ac82a6308d98deab4da7a26d9b364f6e180dc8afd5af35
+hmac: ddaa85f002a77d9d61ca643cac968a4be1e9b9b267187c875e6f7a3a65d893e9
 
 ...
