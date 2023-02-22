@@ -45,7 +45,6 @@ src/shippingservice/target/
 /src/featureflagservice/src/ffs_demo_pb.erl
 /src/featureflagservice/src/ffs_service_*.erl
 /src/featureflagservice/src/hipstershop_*.erl
-/src/frontend/pb/
 /src/frontend/protos/
 /src/paymentservice/demo.proto
 /src/productcatalogservice/genproto/

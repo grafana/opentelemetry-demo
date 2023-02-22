@@ -14,7 +14,11 @@
 
 syntax = "proto3";
 
-package oteldemo;
+import "google/protobuf/timestamp.proto";
+
+package hipstershop;
+
+option go_package = "genproto/hipstershop";
 
 // -----------------Cart service-----------------
 
@@ -130,7 +134,7 @@ message Address {
     string city = 2;
     string state = 3;
     string country = 4;
-    int32 zip_code = 5;
+    string zip_code = 5;
 }
 
 // -----------------Currency service-----------------
@@ -258,3 +262,58 @@ message Ad {
     // short advertisement text to display.
     string text = 2;
 }
+
+// ------------Feature flag service------------------
+
+service FeatureFlagService {
+  rpc GetFlag(GetFlagRequest) returns (GetFlagResponse) {}
+  rpc CreateFlag(CreateFlagRequest) returns (CreateFlagResponse) {}
+  rpc UpdateFlag(UpdateFlagRequest) returns (UpdateFlagResponse) {}
+  rpc ListFlags(ListFlagsRequest) returns (ListFlagsResponse) {}
+  rpc DeleteFlag(DeleteFlagRequest) returns (DeleteFlagResponse) {}
+}
+
+message Flag {
+  string name = 1;
+  string description = 2;
+  bool enabled = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+}
+
+message GetFlagRequest {
+  string name = 1;
+}
+
+message GetFlagResponse {
+  Flag flag = 1;
+}
+
+message CreateFlagRequest {
+  string name = 1;
+  string description = 2;
+  bool enabled = 3;
+}
+
+message CreateFlagResponse {
+  Flag flag = 1;
+}
+
+message UpdateFlagRequest {
+  string name = 1;
+  bool enabled = 2;
+}
+
+message UpdateFlagResponse {}
+
+message ListFlagsRequest {}
+
+message ListFlagsResponse {
+  repeated Flag flag = 1;
+}
+
+message DeleteFlagRequest {
+  string name = 1;
+}
+
+message DeleteFlagResponse {}
