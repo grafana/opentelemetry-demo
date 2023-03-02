@@ -558,7 +558,7 @@ services:
       - ./src/grafana/provisioning/:/etc/grafana/provisioning/
       - ../app-o11y-kwl/plugin:/var/lib/grafana/plugins/app-o11y-kwl
     ports:
-      - "${GRAFANA_SERVICE_PORT}:3000"
+      - "${GRAFANA_SERVICE_PORT}"
     logging: *logging
     extra_hosts:
       - "host.docker.internal:host-gateway"
