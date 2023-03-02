@@ -13,6 +13,9 @@ const ApiGateway = () => ({
     return request<IProductCart>({
       url: `${basePath}/cart`,
       queryParams: { sessionId: userId, currencyCode },
+    }).catch((error) => {
+      faro.api?.pushError(error);
+      return Promise.reject(error);
     });
   },
   addCartItem({ currencyCode, ...item }: CartItem & { currencyCode: string }) {
@@ -21,6 +24,9 @@ const ApiGateway = () => ({
       body: { item, userId },
       queryParams: { currencyCode },
       method: 'POST',
+    }).catch((error) => {
+      faro.api?.pushError(error);
+      return Promise.reject(error);
     });
   },
   emptyCart() {
@@ -28,12 +34,18 @@ const ApiGateway = () => ({
       url: `${basePath}/cart`,
       method: 'DELETE',
       body: { userId },
+    }).catch((error) => {
+      faro.api?.pushError(error);
+      return Promise.reject(error);
     });
   },
 
   getSupportedCurrencyList() {
     return request<string[]>({
       url: `${basePath}/currency`,
+    }).catch((error) => {
+      faro.api?.pushError(error);
+      return Promise.reject(error);
     });
   },
 
@@ -45,6 +57,9 @@ const ApiGateway = () => ({
         currencyCode,
         address: JSON.stringify(address),
       },
+    }).catch((error) => {
+      faro.api?.pushError(error);
+      return Promise.reject(error);
     });
   },
 
@@ -54,6 +69,9 @@ const ApiGateway = () => ({
       method: 'POST',
       queryParams: { currencyCode },
       body: order,
+    }).catch((error) => {
+      faro.api?.pushError(error);
+      return Promise.reject(error);
     });
   },
 
@@ -61,19 +79,19 @@ const ApiGateway = () => ({
     return request<Product[]>({
       url: `${basePath}/products`,
       queryParams: { currencyCode },
+    }).catch((error) => {
+      faro.api?.pushError(error);
+      return Promise.reject(error);
     });
   },
   getProduct(productId: string, currencyCode: string) {
     return request<Product>({
       url: `${basePath}/products/${productId}`,
       queryParams: { currencyCode },
-    }).then(product => {
-      console.log('get product', product);
-      return product;
-    }).catch(error => {
-      faro.api.pushError(error);
+    }).catch((error) => {
+      faro.api?.pushError(error);
       return Promise.reject(error);
-    })
+    });
   },
   listRecommendations(productIds: string[], currencyCode: string) {
     return request<Product[]>({
@@ -83,6 +101,9 @@ const ApiGateway = () => ({
         sessionId: userId,
         currencyCode
       },
+    }).catch((error) => {
+      faro.api?.pushError(error);
+      return Promise.reject(error);
     });
   },
   listAds(contextKeys: string[]) {
@@ -91,6 +112,9 @@ const ApiGateway = () => ({
       queryParams: {
         contextKeys,
       },
+    }).catch((error) => {
+      faro.api?.pushError(error);
+      return Promise.reject(error);
     });
   },
 });

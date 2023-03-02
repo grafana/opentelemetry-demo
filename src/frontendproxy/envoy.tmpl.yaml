@@ -38,10 +38,6 @@ static_resources:
                           route: { cluster: grafana }
                         - match: { prefix: "/" }
                           route: { cluster: frontend }
-                      response_headers_to_add:
-                        - header:
-                            key: "Set-Cookie"
-                            value: "faroCollectorUrl=${GRAFANA_FARO_ENDPOINT};"
                 http_filters:
                   - name: envoy.filters.http.router
                     typed_config:
