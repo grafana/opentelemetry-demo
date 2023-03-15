@@ -26,6 +26,7 @@ steps:
     context: ./src/frontend/
     json_key:
       from_secret: gcr_credentials
+
 ---
 kind: secret
 name: gcp_key
@@ -56,6 +57,6 @@ get:
 
 ---
 kind: signature
-hmac: ddaa85f002a77d9d61ca643cac968a4be1e9b9b267187c875e6f7a3a65d893e9
+hmac: 5ada9ff9a8e1d95244c17697021d14dc80423188f0f52968568c7f247cb70676
 
 ...
