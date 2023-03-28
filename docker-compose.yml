@@ -14,10 +14,10 @@
 
 version: '3.9'
 x-default-logging: &logging
-  driver: "json-file"
+  driver: "fluentd"
   options:
-    max-size: "5m"
-    max-file: "2"
+    fluentd-address: localhost:24224
+    fluentd-async: "true"
 
 networks:
   default:
@@ -633,7 +633,7 @@ services:
 
   # OpenTelemetry Collector
   otelcol:
-    image: otel/opentelemetry-collector-contrib:0.70.0
+    image: otel/opentelemetry-collector-contrib:0.73.0
     container_name: otel-col
     deploy:
       resources:
@@ -649,7 +649,8 @@ services:
       - "4318:4318"     # OTLP over HTTP receiver
       - "9464"          # Prometheus exporter
       - "8888"          # metrics endpoint
-      - "8006"          # fluent forward
+      - "24224:24224"     # fluent forward
+      - "24224:24224/udp" # fluent forward
     depends_on:
       - prometheus
       - loki
@@ -751,15 +752,6 @@ services:
     ports:
       - 3200  # tempo
       - 4317  # otlp grpc receiver
-  promtail:
-    image: grafana/promtail:2.6.1
-    volumes:
-      # custom config will read logs from the containers of
-      # this project
-      - ./src/promtail/promtail.yml:/etc/promtail/config.yml
-      # to read container labels and logs
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /var/lib/docker/containers:/var/lib/docker/containers
   farodb:
     image: mysql:8
     restart: always

@@ -1,8 +1,12 @@
 # extra settings to be merged into OpenTelemetry Collector configuration
 # do not delete this file
+receivers:
+  fluentforward:
+    endpoint: otelcol:24224
+
 exporters:
   logging:
-    loglevel: debug
+    verbosity: detailed
   otlp:
     endpoint: tempo:4317
     tls:
@@ -14,6 +18,15 @@ exporters:
     endpoint: http://loki:3100/loki/api/v1/push
 
 processors:
+  attributes:
+    actions:
+      - action: insert
+        key: service_name
+        from_attribute: container_name
+      - action: insert
+        key: loki.resource.labels
+        value: service_name
+
   transform/grafanacloudapm:
     trace_statements:
       - context: span
@@ -21,6 +34,11 @@ processors:
           - replace_match(attributes["http.target"], "/api/products/*", "/api/products/{productId}")
           - set(name, Concat([attributes["http.method"], attributes["http.target"]], " ")) where name == "HTTP GET" and attributes["http.target"] != nil
           - set(name, Concat([attributes["http.method"], attributes["http.target"]], " ")) where name == "HTTP POST" and attributes["http.target"] != nil
+  transform/fluentd:
+    log_statements:
+      - context: log
+        statements:
+          - replace_pattern(attributes["container_name"], "^/", "")
   batch:
   spanmetrics:
     metrics_exporter: prometheus
@@ -43,5 +61,6 @@ service:
       processors: [batch]
       exporters: [prometheus]
     logs:
-      receivers: [otlp]
-      exporters: [loki]
+      receivers: [otlp, fluentforward]
+      processors: [transform/fluentd, attributes]
+      exporters: [logging, loki]
