@@ -24,7 +24,7 @@ processors:
         key: service_name
         from_attribute: container_name
       - action: insert
-        key: loki.resource.labels
+        key: loki.attribute.labels
         value: service_name
 
   transform/grafanacloudapm:
@@ -39,6 +39,7 @@ processors:
       - context: log
         statements:
           - replace_pattern(attributes["container_name"], "^/", "")
+          - replace_pattern(attributes["container_name"], "\\-", "")
   batch:
   spanmetrics:
     metrics_exporter: prometheus
@@ -63,4 +64,4 @@ service:
     logs:
       receivers: [otlp, fluentforward]
       processors: [transform/fluentd, attributes]
-      exporters: [logging, loki]
+      exporters: [loki]
