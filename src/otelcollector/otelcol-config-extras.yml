@@ -55,6 +55,16 @@ processors:
       span:
         # filter out internal spans
         - 'kind == 1'
+  # TODO remove once Tempo span to metrics generator is aligned with OTel spanmetrics,
+  # see https://docs.google.com/document/d/1iSvlc0Sg0HY86kf_0ApTTQmVze8PHnRSMYadSmU5qpQ/edit#
+  metricstransform:
+    transforms:
+      - include: traces.spanmetrics.duration
+        action: update
+        new_name: traces.spanmetrics.latency
+      - include: traces.spanmetrics.calls
+        action: update
+        new_name: traces.spanmetrics.calls.total
 
 connectors:
   spanmetrics:
@@ -71,6 +81,7 @@ service:
       exporters: [spanmetrics]
     metrics:
       receivers: [spanmetrics]
+      processors: [metricstransform, batch]
       exporters: [prometheusremotewrite]
     # TODO drop traces/servicegraph and add servicegraph to the pipelines above once servicegraph is released as connector (v0.75.0)
     traces/servicegraph:
