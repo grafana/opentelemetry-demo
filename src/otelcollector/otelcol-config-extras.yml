@@ -50,12 +50,18 @@ processors:
         default: UNSET
   servicegraph:
     metrics_exporter: prometheus
+  filter:
+    error_mode: ignore
+    traces:
+      span:
+        # filter out internal spans
+        - 'kind == 1'
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [transform/grafanacloudapm, spanmetrics, servicegraph, batch]
+      processors: [filter, transform/grafanacloudapm, spanmetrics, servicegraph, batch]
       exporters: [otlp]
     metrics:
       receivers: [otlp]
