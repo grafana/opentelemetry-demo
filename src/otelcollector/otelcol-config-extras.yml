@@ -7,13 +7,16 @@ receivers:
 exporters:
   logging:
     verbosity: detailed
-  otlp:
+  otlp/tempo:
     endpoint: tempo:4317
     tls:
       insecure: true
-  prometheus:
-    endpoint: "otelcol:9464"
-    enable_open_metrics: true
+  # TODO spanmetrics does not work correctly with prometheus exporter, until it is fixed we will
+  # use prometheusremotewrite instead
+  prometheusremotewrite:
+    endpoint: http://prometheus:9090/api/v1/write
+    target_info:
+      enabled: true
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
 
@@ -41,15 +44,11 @@ processors:
           - replace_pattern(attributes["container_name"], "^/", "")
           - replace_pattern(attributes["container_name"], "\\-", "")
   batch:
-  spanmetrics:
-    metrics_exporter: prometheus
-    dimensions:
-      - name: process.runtime.name
-        default: UNSET
-      - name: telemetry.sdk.language
-        default: UNSET
+  # TODO remove once servicegraph is released as connector
+  # See https://github.com/open-telemetry/opentelemetry-collector-releases/pull/313 and
+  # https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/20452
   servicegraph:
-    metrics_exporter: prometheus
+    metrics_exporter: prometheusremotewrite
   filter:
     error_mode: ignore
     traces:
@@ -57,16 +56,31 @@ processors:
         # filter out internal spans
         - 'kind == 1'
 
+connectors:
+  spanmetrics:
+    namespace: "traces.spanmetrics"
+    histogram:
+      unit: "s"
+      explicit:
+
 service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [filter, transform/grafanacloudapm, spanmetrics, servicegraph, batch]
-      exporters: [otlp]
+      processors: [filter, transform/grafanacloudapm, batch]
+      exporters: [spanmetrics]
     metrics:
+      receivers: [spanmetrics]
+      exporters: [prometheusremotewrite]
+    # TODO drop traces/servicegraph and add servicegraph to the pipelines above once servicegraph is released as connector (v0.75.0)
+    traces/servicegraph:
       receivers: [otlp]
-      processors: [batch]
-      exporters: [prometheus]
+      processors: [filter, transform/grafanacloudapm, servicegraph]
+      exporters: [logging] # we do not have to send anywhere, but at least one exporter is required
+    traces/tempo:
+      receivers: [otlp]
+      processors: [transform/grafanacloudapm, batch]
+      exporters: [otlp/tempo]
     logs:
       receivers: [otlp, fluentforward]
       processors: [transform/fluentd, attributes]
