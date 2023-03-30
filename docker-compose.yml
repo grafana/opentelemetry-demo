@@ -642,14 +642,16 @@ services:
 
   # OpenTelemetry Collector
   otelcol:
-    image: otel/opentelemetry-collector-contrib:0.72.0
+    image: otel/opentelemetry-collector-contrib:0.74.0
     container_name: otel-col
     deploy:
       resources:
         limits:
           memory: 125M
     restart: unless-stopped
-    command: [ "--config=/etc/otelcol-config.yml", "--config=/etc/otelcol-config-extras.yml" ]
+    # TODO add "--feature-gates=pkg.translator.prometheus.NormalizeName" once Tempo span to metrics
+    # generator is aligned with OTel spanmetrics, see https://docs.google.com/document/d/1iSvlc0Sg0HY86kf_0ApTTQmVze8PHnRSMYadSmU5qpQ/edit#
+    command: ["--config=/etc/otelcol-config.yml", "--config=/etc/otelcol-config-extras.yml"]
     volumes:
       - ./src/otelcollector/otelcol-config.yml:/etc/otelcol-config.yml
       - ./src/otelcollector/otelcol-config-extras.yml:/etc/otelcol-config-extras.yml
@@ -683,6 +685,7 @@ services:
       - --web.enable-lifecycle
       - --web.route-prefix=/
       - --enable-feature=exemplar-storage
+      - --web.enable-remote-write-receiver
     volumes:
       - ./src/prometheus/prometheus-config.yaml:/etc/prometheus/prometheus-config.yaml
     deploy:
