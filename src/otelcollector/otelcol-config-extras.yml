@@ -44,11 +44,6 @@ processors:
           - replace_pattern(attributes["container_name"], "^/", "")
           - replace_pattern(attributes["container_name"], "\\-", "")
   batch:
-  # TODO remove once servicegraph is released as connector
-  # See https://github.com/open-telemetry/opentelemetry-collector-releases/pull/313 and
-  # https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/20452
-  servicegraph:
-    metrics_exporter: prometheusremotewrite
   filter:
     error_mode: ignore
     traces:
@@ -72,22 +67,18 @@ connectors:
     histogram:
       unit: "s"
       explicit:
+  servicegraph:
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
       processors: [filter, transform/grafanacloudapm, batch]
-      exporters: [spanmetrics]
+      exporters: [spanmetrics, servicegraph]
     metrics:
-      receivers: [spanmetrics]
+      receivers: [spanmetrics, servicegraph]
       processors: [metricstransform, batch]
       exporters: [prometheusremotewrite]
-    # TODO drop traces/servicegraph and add servicegraph to the pipelines above once servicegraph is released as connector (v0.75.0)
-    traces/servicegraph:
-      receivers: [otlp]
-      processors: [filter, transform/grafanacloudapm, servicegraph]
-      exporters: [logging] # we do not have to send anywhere, but at least one exporter is required
     traces/tempo:
       receivers: [otlp]
       processors: [transform/grafanacloudapm, batch]
