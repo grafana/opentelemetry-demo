@@ -762,6 +762,8 @@ services:
   tempo:
     image: grafana/tempo:latest
     container_name: tempo
+    depends_on:
+      - prometheus
     command: ["-config.file=/etc/tempo.yaml"]
     volumes:
       - ./src/tempo/tempo.yaml:/etc/tempo.yaml

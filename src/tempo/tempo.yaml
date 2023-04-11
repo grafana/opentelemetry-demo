@@ -1,4 +1,5 @@
 auth_enabled: false
+metrics_generator_enabled: true
 server:
   http_listen_port: 3200
 
@@ -41,3 +42,20 @@ storage:
     pool:
       max_workers: 100 # the worker pool mainly drives querying, but is also used for polling the blocklist
       queue_depth: 10000
+
+metrics_generator:
+  ring:
+    kvstore: {}
+  processor:
+    service_graphs: {}
+  registry:
+    external_labels:
+      source: tempo
+  storage:
+    path: /tmp/tempo/mg-wal
+    wal: {}
+    remote_write:
+      - url: http://prometheus:9090/api/v1/write
+
+overrides:
+  metrics_generator_processors: ["service-graphs"]

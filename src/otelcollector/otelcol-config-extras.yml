@@ -67,16 +67,15 @@ connectors:
     histogram:
       unit: "s"
       explicit:
-  servicegraph:
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
       processors: [filter, transform/grafanacloudapm, batch]
-      exporters: [spanmetrics, servicegraph]
+      exporters: [spanmetrics]
     metrics:
-      receivers: [spanmetrics, servicegraph]
+      receivers: [spanmetrics]
       processors: [metricstransform, batch]
       exporters: [prometheusremotewrite]
     traces/tempo:
