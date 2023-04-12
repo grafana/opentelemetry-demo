@@ -1,5 +1,4 @@
 auth_enabled: false
-metrics_generator_enabled: true
 server:
   http_listen_port: 3200
 
@@ -47,7 +46,8 @@ metrics_generator:
   ring:
     kvstore: {}
   processor:
-    service_graphs: {}
+    service_graphs:
+      dimensions: ["service.namespace"]
   registry:
     external_labels:
       source: tempo
