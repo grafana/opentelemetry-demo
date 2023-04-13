@@ -93,6 +93,10 @@ service:
       receivers: [spanmetrics]
       processors: [metricstransform, batch]
       exporters: [prometheusremotewrite]
+    metrics/otlp:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheusremotewrite]
     traces/tempo:
       receivers: [otlp]
       processors: [transform/grafanacloudapm, batch]
