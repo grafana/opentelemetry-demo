@@ -24,11 +24,22 @@ processors:
   attributes:
     actions:
       - action: insert
+        key: service.name
+        from_attribute: container_name
+      - action: insert
+        key: service.instance.id
+        from_attribute: container_id
+      - action: insert
         key: service_name
         from_attribute: container_name
       - action: insert
         key: loki.attribute.labels
         value: service_name
+
+  groupbyattrs:
+    keys:
+      - service.name
+      - service.instance.id
 
   transform/grafanacloudapm:
     trace_statements:
@@ -84,5 +95,5 @@ service:
       exporters: [otlp/tempo]
     logs:
       receivers: [otlp, fluentforward]
-      processors: [transform/fluentd, attributes]
+      processors: [transform/fluentd, attributes, groupbyattrs]
       exporters: [loki]
