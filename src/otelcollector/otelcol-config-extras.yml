@@ -27,6 +27,9 @@ processors:
         key: service.name
         from_attribute: container_name
       - action: insert
+        key: service.namespace
+        value: opentelemetry-demo
+      - action: insert
         key: service.instance.id
         from_attribute: container_id
       - action: insert
@@ -39,6 +42,7 @@ processors:
   groupbyattrs:
     keys:
       - service.name
+      - service.namespace
       - service.instance.id
 
   transform/grafanacloudapm:
