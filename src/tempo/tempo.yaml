@@ -46,6 +46,7 @@ metrics_generator:
   ring:
     kvstore: {}
   processor:
+    span_metrics: {}
     service_graphs:
       dimensions: ["service.namespace"]
   registry:
@@ -58,4 +59,5 @@ metrics_generator:
       - url: http://prometheus:9090/api/v1/write
 
 overrides:
-  metrics_generator_processors: ["service-graphs"]
+  metrics_generator_processors: ["service-graphs", "span-metrics"]
+  metrics_generator_processor_span_metrics_enable_target_info: true

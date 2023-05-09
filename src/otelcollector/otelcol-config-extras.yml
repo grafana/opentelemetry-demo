@@ -59,45 +59,14 @@ processors:
           - replace_pattern(attributes["container_name"], "^/", "")
           - replace_pattern(attributes["container_name"], "\\-", "")
   batch:
-  filter:
-    error_mode: ignore
-    traces:
-      span:
-        # filter out internal spans
-        - 'kind == 1'
-  # TODO remove once Tempo span to metrics generator is aligned with OTel spanmetrics,
-  # see https://docs.google.com/document/d/1iSvlc0Sg0HY86kf_0ApTTQmVze8PHnRSMYadSmU5qpQ/edit#
-  metricstransform:
-    transforms:
-      - include: traces.spanmetrics.duration
-        action: update
-        new_name: traces.spanmetrics.latency
-      - include: traces.spanmetrics.calls
-        action: update
-        new_name: traces.spanmetrics.calls.total
-
-connectors:
-  spanmetrics:
-    namespace: "traces.spanmetrics"
-    histogram:
-      unit: "s"
-      explicit:
 
 service:
   pipelines:
-    traces:
-      receivers: [otlp]
-      processors: [filter, transform/grafanacloudapm, batch]
-      exporters: [spanmetrics]
     metrics:
-      receivers: [spanmetrics]
-      processors: [metricstransform, batch]
-      exporters: [prometheusremotewrite]
-    metrics/otlp:
       receivers: [otlp]
       processors: [batch]
       exporters: [prometheusremotewrite]
-    traces/tempo:
+    traces:
       receivers: [otlp]
       processors: [transform/grafanacloudapm, batch]
       exporters: [otlp/tempo]

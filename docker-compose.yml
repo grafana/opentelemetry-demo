@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-version: '3.9'
+version: "3.9"
 x-default-logging: &logging
   driver: "fluentd"
   options:
@@ -182,7 +182,7 @@ services:
     environment:
       - CURRENCY_SERVICE_PORT
       - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-      - OTEL_RESOURCE_ATTRIBUTES=${OTEL_RESOURCE_ATTRIBUTES},service.name=currencyservice   # The C++ SDK does not support OTEL_SERVICE_NAME
+      - OTEL_RESOURCE_ATTRIBUTES=${OTEL_RESOURCE_ATTRIBUTES},service.name=currencyservice # The C++ SDK does not support OTEL_SERVICE_NAME
     depends_on:
       - otelcol
     logging: *logging
@@ -227,8 +227,8 @@ services:
           memory: 175M
     restart: unless-stopped
     ports:
-      - "${FEATURE_FLAG_SERVICE_PORT}:${FEATURE_FLAG_SERVICE_PORT}"                                  # Feature Flag Service UI
-      - "${FEATURE_FLAG_GRPC_SERVICE_PORT}"                             # Feature Flag Service gRPC API
+      - "${FEATURE_FLAG_SERVICE_PORT}:${FEATURE_FLAG_SERVICE_PORT}" # Feature Flag Service UI
+      - "${FEATURE_FLAG_GRPC_SERVICE_PORT}" # Feature Flag Service gRPC API
     environment:
       - FEATURE_FLAG_SERVICE_PORT
       - FEATURE_FLAG_GRPC_SERVICE_PORT
@@ -238,7 +238,15 @@ services:
       - DATABASE_URL=ecto://ffs:ffs@ffs_postgres:5432/ffs
       - FEATURE_FLAG_SERVICE_PATH_ROOT="/feature"
     healthcheck:
-      test: ["CMD", "curl", "-H", "baggage: synthetic_request=true", "-f", "http://localhost:${FEATURE_FLAG_SERVICE_PORT}"]
+      test:
+        [
+          "CMD",
+          "curl",
+          "-H",
+          "baggage: synthetic_request=true",
+          "-f",
+          "http://localhost:${FEATURE_FLAG_SERVICE_PORT}",
+        ]
     depends_on:
       ffs_postgres:
         condition: service_healthy
@@ -478,7 +486,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500M               # This is high to enable supporting the recommendationCache feature flag use case
+          memory: 500M # This is high to enable supporting the recommendationCache feature flag use case
     restart: unless-stopped
     ports:
       - "${RECOMMENDATION_SERVICE_PORT}"
@@ -594,7 +602,6 @@ services:
       - "${REDIS_PORT}"
     logging: *logging
 
-
   # ********************
   # Telemetry Components
   # ********************
@@ -615,8 +622,8 @@ services:
           memory: 300M
     restart: unless-stopped
     ports:
-      - "${JAEGER_SERVICE_PORT}"                    # Jaeger UI
-      - "4317"                           # OTLP gRPC default port
+      - "${JAEGER_SERVICE_PORT}" # Jaeger UI
+      - "4317" # OTLP gRPC default port
     environment:
       - COLLECTOR_OTLP_ENABLED=true
       - METRICS_STORAGE_TYPE=prometheus
@@ -651,16 +658,20 @@ services:
     restart: unless-stopped
     # TODO add "--feature-gates=pkg.translator.prometheus.NormalizeName" once Tempo span to metrics
     # generator is aligned with OTel spanmetrics, see https://docs.google.com/document/d/1iSvlc0Sg0HY86kf_0ApTTQmVze8PHnRSMYadSmU5qpQ/edit#
-    command: ["--config=/etc/otelcol-config.yml", "--config=/etc/otelcol-config-extras.yml"]
+    command:
+      [
+        "--config=/etc/otelcol-config.yml",
+        "--config=/etc/otelcol-config-extras.yml",
+      ]
     volumes:
       - ./src/otelcollector/otelcol-config.yml:/etc/otelcol-config.yml
       - ./src/otelcollector/otelcol-config-extras.yml:/etc/otelcol-config-extras.yml
     ports:
-      - "4317"          # OTLP over gRPC receiver
-      - "4318:4318"     # OTLP over HTTP receiver
-      - "9464"          # Prometheus exporter
-      - "8888"          # metrics endpoint
-      - "24224:24224"     # fluent forward
+      - "4317" # OTLP over gRPC receiver
+      - "4318:4318" # OTLP over HTTP receiver
+      - "9464" # Prometheus exporter
+      - "8888" # metrics endpoint
+      - "24224:24224" # fluent forward
       - "24224:24224/udp" # fluent forward
     depends_on:
       - prometheus
@@ -760,7 +771,7 @@ services:
     volumes:
       - ./src/loki/loki.yaml:/etc/loki/local-config.yaml
   tempo:
-    image: grafana/tempo:latest
+    image: grafana/tempo:main-2981488
     container_name: tempo
     depends_on:
       - prometheus
@@ -768,33 +779,36 @@ services:
     volumes:
       - ./src/tempo/tempo.yaml:/etc/tempo.yaml
     ports:
-      - 3200:3200  # tempo
-      - 4317  # otlp grpc receiver
+      - 3200:3200 # tempo
+      - 4317 # otlp grpc receiver
   farodb:
     image: mysql:8
     restart: always
     environment:
-      MYSQL_DATABASE: 'faro'
-      MYSQL_USER: 'faro'
-      MYSQL_PASSWORD: 'my-secret-pw'
-      MYSQL_ROOT_PASSWORD: 'my-secret-pw'
+      MYSQL_DATABASE: "faro"
+      MYSQL_USER: "faro"
+      MYSQL_PASSWORD: "my-secret-pw"
+      MYSQL_ROOT_PASSWORD: "my-secret-pw"
     expose:
-      - '3306'
+      - "3306"
   faroendpoint:
     image: us.gcr.io/kubernetes-dev/frontend-monitoring:3c7f7ba
-    command: ["-db_connection_string=faro:my-secret-pw@tcp(farodb:3306)/faro",
-      "-enable_config_api",
-      "-enable_collector_endpoint",
-      "-public_collect_endpoint_url=http://localhost:18000/collect",
-      "-exporter.otlp-gateway=http://otelcol:4318"]
+    command:
+      [
+        "-db_connection_string=faro:my-secret-pw@tcp(farodb:3306)/faro",
+        "-enable_config_api",
+        "-enable_collector_endpoint",
+        "-public_collect_endpoint_url=http://localhost:18000/collect",
+        "-exporter.otlp-gateway=http://otelcol:4318",
+      ]
     volumes:
       - ./src/faroendpoint/migrations/100_data.up.sql:/app/migrations/mysql/100_data.up.sql
     ports:
-      - '18000:8000'
-      - '18081:8081'
+      - "18000:8000"
+      - "18081:8081"
     expose:
-      - '8000'
-      - '8081'
+      - "8000"
+      - "8081"
     restart: always
     depends_on:
-      - 'farodb'
+      - "farodb"
