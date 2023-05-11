@@ -64,7 +64,7 @@ processors:
     traces:
       span:
         # filter out internal spans
-        - 'kind == 1'
+        - "kind == 1"
   # TODO remove once Tempo span to metrics generator is aligned with OTel spanmetrics,
   # see https://docs.google.com/document/d/1iSvlc0Sg0HY86kf_0ApTTQmVze8PHnRSMYadSmU5qpQ/edit#
   metricstransform:
@@ -82,6 +82,24 @@ connectors:
     histogram:
       unit: "s"
       explicit:
+        buckets:
+          [
+            "0s",
+            "0.005s",
+            "0.01s",
+            "0.025s",
+            "0.05s",
+            "0.075s",
+            "0.1s",
+            "0.25s",
+            "0.5s",
+            "0.75s",
+            "1s",
+            "2.5s",
+            "5s",
+            "7.5s",
+            "10s",
+          ]
 
 service:
   pipelines:
