@@ -19,9 +19,13 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [spanmetrics, batch]
-      exporters: [logging, otlphttp/grafanacloud]
+      processors: [batch]
+      exporters: [logging, otlphttp/grafanacloud, spanmetrics]
     metrics:
-      receivers: [otlp]
+      receivers: [otlp, spanmetrics]
       processors: [batch]
       exporters: [prometheus, logging, otlphttp/grafanacloud]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging]

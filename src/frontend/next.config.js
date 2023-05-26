@@ -28,6 +28,7 @@ const {
 } = process.env;
 
 const nextConfig = {
+  productionBrowserSourceMaps: true,
   reactStrictMode: true,
   output: 'standalone',
   swcMinify: true,
