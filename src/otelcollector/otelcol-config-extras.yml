@@ -7,15 +7,23 @@ extensions:
     client_auth:
       username: ${GRAFANA_INSTANCE_ID}
       password: ${GRAFANA_CLOUD_APIKEY}
+  basicauth/grafanacloud-mimir:
+    client_auth:
+      username: ${GRAFANA_MIMIR_INSTANCE_ID}
+      password: ${GRAFANA_CLOUD_APIKEY}
 
 exporters:
+  prometheusremotewrite:
+    endpoint: ${GRAFANA_MIMIR_ENDPOINT}
+    auth:
+      authenticator: basicauth/grafanacloud-mimir
   otlphttp/grafanacloud:
     auth:
       authenticator: basicauth/grafanacloud
     endpoint: ${GRAFANA_OTLP_ENDPOINT}
 
 service:
-  extensions: [basicauth/grafanacloud]
+  extensions: [basicauth/grafanacloud, basicauth/grafanacloud-mimir]
   pipelines:
     traces:
       receivers: [otlp]
@@ -24,7 +32,7 @@ service:
     metrics:
       receivers: [otlp, spanmetrics]
       processors: [batch]
-      exporters: [prometheus, logging, otlphttp/grafanacloud]
+      exporters: [prometheusremotewrite, logging]
     logs:
       receivers: [otlp]
       processors: [batch]
