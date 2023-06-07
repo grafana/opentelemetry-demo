@@ -545,7 +545,7 @@ services:
           memory: 500M
     restart: unless-stopped
     environment:
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
       - OTEL_EXPORTER_OTLP_ENDPOINT
       - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       - OTEL_RESOURCE_ATTRIBUTES
@@ -633,9 +633,9 @@ services:
       - ./src/otelcollector/otelcol-config.yml:/etc/otelcol-config.yml
       - ./src/otelcollector/otelcol-config-extras.yml:/etc/otelcol-config-extras.yml
     ports:
-      - "4317"          # OTLP over gRPC receiver
+      - "4317:4317"          # OTLP over gRPC receiver
       - "4318:4318"     # OTLP over HTTP receiver
-      - "9464"          # Prometheus exporter
+      - "9464:9464"          # Prometheus exporter
       - "8888"          # metrics endpoint
 #    depends_on:
 #      - jaeger
