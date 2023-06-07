@@ -32,7 +32,7 @@ service:
     metrics:
       receivers: [otlp, spanmetrics]
       processors: [batch]
-      exporters: [prometheusremotewrite, logging]
+      exporters: [prometheus, prometheusremotewrite, logging]
     logs:
       receivers: [otlp]
       processors: [batch]
