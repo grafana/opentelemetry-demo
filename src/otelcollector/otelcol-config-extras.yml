@@ -36,4 +36,4 @@ service:
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging]
+      exporters: [logging, otlphttp/grafanacloud]
