@@ -49,6 +49,7 @@ metrics_generator:
     span_metrics: {}
     service_graphs:
       dimensions: ["service.namespace"]
+      enable_client_server_prefix: true
   registry:
     external_labels:
       source: tempo
@@ -60,4 +61,7 @@ metrics_generator:
 
 overrides:
   metrics_generator_processors: ["service-graphs", "span-metrics"]
+  metrics_generator_processor_service_graphs_peer_attributes:
+    ["db.system", "db.url", "peer.service"]
   metrics_generator_processor_span_metrics_enable_target_info: true
+  metrics_generator_processor_service_graphs_enable_client_server_prefix: true

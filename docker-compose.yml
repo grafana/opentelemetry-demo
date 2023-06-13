@@ -771,7 +771,7 @@ services:
     volumes:
       - ./src/loki/loki.yaml:/etc/loki/local-config.yaml
   tempo:
-    image: grafana/tempo:main-2981488
+    image: grafana/tempo:latest
     container_name: tempo
     depends_on:
       - prometheus
