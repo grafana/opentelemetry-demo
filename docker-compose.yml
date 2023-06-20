@@ -289,10 +289,6 @@ services:
       dockerfile: ./src/frontend/Dockerfile
       cache_from:
         - ${IMAGE_NAME}:${IMAGE_VERSION}-frontend
-    deploy:
-      resources:
-        limits:
-          memory: 200M
     restart: unless-stopped
     ports:
       - "${FRONTEND_PORT}"
@@ -327,6 +323,7 @@ services:
       - quoteservice
       - recommendationservice
       - shippingservice
+      - faroendpoint
     logging: *logging
 
   # Frontend Proxy (Envoy)
@@ -361,7 +358,7 @@ services:
       - frontend
       - featureflagservice
       - loadgenerator
-      - grafana
+      #- grafana
 
   # Load Generator
   loadgenerator:
@@ -791,12 +788,15 @@ services:
       MYSQL_ROOT_PASSWORD: "my-secret-pw"
     expose:
       - "3306"
+    ports:
+      - "13306:3306"
   faroendpoint:
-    image: us.gcr.io/kubernetes-dev/frontend-monitoring:3c7f7ba
+    image: us.gcr.io/kubernetes-dev/frontend-monitoring:latest
     command:
       [
         "-db_connection_string=faro:my-secret-pw@tcp(farodb:3306)/faro",
         "-enable_config_api",
+        "-service-name=faroendpoint",
         "-enable_collector_endpoint",
         "-public_collect_endpoint_url=http://localhost:18000/collect",
         "-exporter.otlp-gateway=http://otelcol:4318",

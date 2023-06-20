@@ -33,6 +33,7 @@ const Faro = async (collectorString: string) => {
             new DocumentLoadInstrumentation(),
             new FetchInstrumentation({
               propagateTraceHeaderCorsUrls: /.*/,
+              ignoreUrls: [/collect\/abcd123/],
               clearTimingResources: true,
               applyCustomAttributesOnSpan(span) {
                 span.setAttribute('app.synthetic_request', 'false');
