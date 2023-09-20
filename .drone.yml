@@ -14,7 +14,19 @@ trigger:
       - push
 
 steps:
-- name: docker
+- name: checkoutservice-docker
+  image: plugins/gcr
+  settings:
+    dockerfile: ./src/checkoutservice/Dockerfile
+    registry: us.gcr.io
+    repo: kubernetes-dev/opentelemetry-demo
+    tags:
+      - latest
+      - ${DRONE_COMMIT_SHA:0:7}
+    context: ./src/checkoutservice/
+    json_key:
+      from_secret: gcr_credentials
+- name: frontend-docker
   image: plugins/gcr
   settings:
     dockerfile: ./src/frontend/Dockerfile.ci
@@ -56,6 +68,6 @@ get:
 
 ---
 kind: signature
-hmac: ddaa85f002a77d9d61ca643cac968a4be1e9b9b267187c875e6f7a3a65d893e9
+hmac: 330b96a314c4e43c3986347a56b149806d20df11f50fd77b0e0749a9872ef3b5
 
 ...
