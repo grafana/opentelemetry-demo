@@ -55,7 +55,7 @@ kind: ServiceAccount
 metadata:
   name: opentelemetry-demo
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/name: opentelemetry-demo
@@ -311,14 +311,14 @@ kind: ConfigMap
 metadata:
   name: opentelemetry-demo-grafana-dashboards
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/name: opentelemetry-demo
     app.kubernetes.io/version: "1.4.0"
     app.kubernetes.io/part-of: opentelemetry-demo
 data:
-
+  
   demo-dashboard.json: |
     {
       "annotations": {
@@ -6050,8 +6050,8 @@ metadata:
     component: standalone-collector
 spec:
   type: ClusterIP
-  ports:
-
+  ports: 
+    
     - name: jaeger-compact
       port: 6831
       targetPort: 6831
@@ -6121,7 +6121,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-adservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-adservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: adservice
@@ -6135,7 +6135,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-adservice
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6144,7 +6144,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-cartservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-cartservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: cartservice
@@ -6158,7 +6158,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-cartservice
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6167,7 +6167,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-checkoutservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-checkoutservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: checkoutservice
@@ -6181,7 +6181,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-checkoutservice
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6190,7 +6190,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-currencyservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-currencyservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: currencyservice
@@ -6204,7 +6204,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-currencyservice
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6213,7 +6213,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-emailservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-emailservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: emailservice
@@ -6227,7 +6227,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-emailservice
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6236,7 +6236,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-featureflagservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-featureflagservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: featureflagservice
@@ -6253,7 +6253,7 @@ spec:
       name: http
       targetPort: 8081
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-featureflagservice
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6262,7 +6262,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-ffspostgres
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-ffspostgres
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: ffspostgres
@@ -6276,7 +6276,7 @@ spec:
       name: postgres
       targetPort: 5432
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-ffspostgres
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6285,7 +6285,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-frontend
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-frontend
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: frontend
@@ -6299,7 +6299,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-frontend
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6308,7 +6308,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-frontendproxy
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-frontendproxy
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: frontendproxy
@@ -6322,7 +6322,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-frontendproxy
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6331,7 +6331,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-kafka
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-kafka
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: kafka
@@ -6348,7 +6348,7 @@ spec:
       name: controller
       targetPort: 9093
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-kafka
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6357,7 +6357,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-loadgenerator
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-loadgenerator
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: loadgenerator
@@ -6371,7 +6371,7 @@ spec:
       name: tcp-service
       targetPort: 8089
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-loadgenerator
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6380,7 +6380,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-paymentservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-paymentservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: paymentservice
@@ -6394,7 +6394,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-paymentservice
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6403,7 +6403,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-productcatalogservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-productcatalogservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: productcatalogservice
@@ -6417,7 +6417,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-productcatalogservice
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6426,7 +6426,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-quoteservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-quoteservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: quoteservice
@@ -6440,7 +6440,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-quoteservice
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6449,7 +6449,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-recommendationservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-recommendationservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: recommendationservice
@@ -6463,7 +6463,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-recommendationservice
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6472,7 +6472,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-redis
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-redis
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: redis
@@ -6486,7 +6486,7 @@ spec:
       name: redis
       targetPort: 6379
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-redis
 ---
 # Source: opentelemetry-demo/templates/component.yaml
@@ -6495,7 +6495,7 @@ kind: Service
 metadata:
   name: opentelemetry-demo-shippingservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-shippingservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: shippingservice
@@ -6509,7 +6509,7 @@ spec:
       name: tcp-service
       targetPort: 8080
   selector:
-
+    
     opentelemetry.io/name: opentelemetry-demo-shippingservice
 ---
 # Source: opentelemetry-demo/charts/grafana/templates/deployment.yaml
@@ -6542,7 +6542,7 @@ spec:
         checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/secret: 168eac9549c1155906143bae680e232ce7a8acecd06af6a8ca9d6088db7473f2
     spec:
-
+      
       serviceAccountName: opentelemetry-demo-grafana
       automountServiceAccountToken: true
       securityContext:
@@ -6752,9 +6752,9 @@ spec:
         app.kubernetes.io/name: otelcol
         app.kubernetes.io/instance: opentelemetry-demo
         component: standalone-collector
-
+        
     spec:
-
+      
       serviceAccountName: opentelemetry-demo-otelcol
       securityContext:
         {}
@@ -6918,7 +6918,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-accountingservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-accountingservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: accountingservice
@@ -6928,12 +6928,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-accountingservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-accountingservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: accountingservice
@@ -6998,7 +6998,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-adservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-adservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: adservice
@@ -7008,12 +7008,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-adservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-adservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: adservice
@@ -7025,7 +7025,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-adservice'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
@@ -7078,7 +7078,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-cartservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-cartservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: cartservice
@@ -7088,12 +7088,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-cartservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-cartservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: cartservice
@@ -7105,7 +7105,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-cartservice'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
@@ -7166,7 +7166,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-checkoutservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-checkoutservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: checkoutservice
@@ -7176,12 +7176,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-checkoutservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-checkoutservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: checkoutservice
@@ -7193,7 +7193,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-checkoutservice'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
@@ -7264,7 +7264,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-currencyservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-currencyservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: currencyservice
@@ -7274,12 +7274,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-currencyservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-currencyservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: currencyservice
@@ -7291,7 +7291,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-currencyservice'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
@@ -7340,7 +7340,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-emailservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-emailservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: emailservice
@@ -7350,12 +7350,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-emailservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-emailservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: emailservice
@@ -7367,7 +7367,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-emailservice'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
@@ -7418,7 +7418,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-featureflagservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-featureflagservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: featureflagservice
@@ -7428,12 +7428,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-featureflagservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-featureflagservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: featureflagservice
@@ -7445,7 +7445,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-featureflagservice'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 50053
             name: grpc
           - containerPort: 8081
@@ -7516,7 +7516,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-ffspostgres
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-ffspostgres
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: ffspostgres
@@ -7526,12 +7526,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-ffspostgres
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-ffspostgres
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: ffspostgres
@@ -7543,7 +7543,7 @@ spec:
           image: 'postgres:14'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 5432
             name: postgres
           env:
@@ -7598,7 +7598,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-frauddetectionservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-frauddetectionservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: frauddetectionservice
@@ -7608,12 +7608,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-frauddetectionservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-frauddetectionservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: frauddetectionservice
@@ -7678,7 +7678,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-frontend
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-frontend
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: frontend
@@ -7688,12 +7688,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-frontend
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-frontend
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: frontend
@@ -7705,7 +7705,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-frontend'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
@@ -7778,7 +7778,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-frontendproxy
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-frontendproxy
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: frontendproxy
@@ -7788,12 +7788,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-frontendproxy
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-frontendproxy
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: frontendproxy
@@ -7805,7 +7805,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-frontendproxy'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
@@ -7882,7 +7882,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-kafka
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-kafka
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: kafka
@@ -7892,12 +7892,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-kafka
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-kafka
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: kafka
@@ -7909,7 +7909,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-kafka'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 9092
             name: plaintext
           - containerPort: 9093
@@ -7966,7 +7966,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-loadgenerator
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-loadgenerator
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: loadgenerator
@@ -7976,12 +7976,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-loadgenerator
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-loadgenerator
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: loadgenerator
@@ -7993,7 +7993,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-loadgenerator'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8089
             name: service
           env:
@@ -8054,7 +8054,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-paymentservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-paymentservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: paymentservice
@@ -8064,12 +8064,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-paymentservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-paymentservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: paymentservice
@@ -8081,7 +8081,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-paymentservice'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
@@ -8134,7 +8134,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-productcatalogservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-productcatalogservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: productcatalogservice
@@ -8144,12 +8144,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-productcatalogservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-productcatalogservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: productcatalogservice
@@ -8161,7 +8161,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-productcatalogservice'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
@@ -8212,7 +8212,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-quoteservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-quoteservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: quoteservice
@@ -8222,12 +8222,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-quoteservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-quoteservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: quoteservice
@@ -8239,7 +8239,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-quoteservice'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
@@ -8296,7 +8296,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-recommendationservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-recommendationservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: recommendationservice
@@ -8306,12 +8306,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-recommendationservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-recommendationservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: recommendationservice
@@ -8323,7 +8323,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-recommendationservice'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
@@ -8380,7 +8380,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-redis
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-redis
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: redis
@@ -8390,12 +8390,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-redis
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-redis
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: redis
@@ -8407,7 +8407,7 @@ spec:
           image: 'redis:alpine'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 6379
             name: redis
           env:
@@ -8456,7 +8456,7 @@ kind: Deployment
 metadata:
   name: opentelemetry-demo-shippingservice
   labels:
-
+    
     opentelemetry.io/name: opentelemetry-demo-shippingservice
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/component: shippingservice
@@ -8466,12 +8466,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-
+      
       opentelemetry.io/name: opentelemetry-demo-shippingservice
   template:
     metadata:
       labels:
-
+        
         opentelemetry.io/name: opentelemetry-demo-shippingservice
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/component: shippingservice
@@ -8483,7 +8483,7 @@ spec:
           image: 'ghcr.io/open-telemetry/demo:1.4.0-shippingservice'
           imagePullPolicy: IfNotPresent
           ports:
-
+          
           - containerPort: 8080
             name: service
           env:
