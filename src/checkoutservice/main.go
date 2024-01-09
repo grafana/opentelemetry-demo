@@ -7,20 +7,23 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"go.opentelemetry.io/otel/sdk/instrumentation"
-	semconv "go.opentelemetry.io/otel/semconv/v1.19.0"
 	"net"
 	"net/http"
 	"os"
+	stdruntime "runtime"
 	"strconv"
 	"sync"
 	"time"
+
+	"go.opentelemetry.io/otel/sdk/instrumentation"
+	semconv "go.opentelemetry.io/otel/semconv/v1.19.0"
 
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 
 	"github.com/IBM/sarama"
 	"github.com/google/uuid"
+	"github.com/grafana/pyroscope-go"
 	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
@@ -120,6 +123,38 @@ func initMeterProvider() *sdkmetric.MeterProvider {
 	return mp
 }
 
+func initProfilerProvider() *pyroscope.Profiler {
+	stdruntime.SetMutexProfileFraction(5)
+	stdruntime.SetBlockProfileRate(5)
+
+	cfg := pyroscope.Config{
+		ApplicationName:   "checkoutservice",
+		ServerAddress:     "http://pyroscope-server:4040", // TODO(bryan) update this
+		BasicAuthUser:     "",                             // TODO(bryan) update this
+		BasicAuthPassword: "",                             // TODO(bryan) update this
+		Logger:            nil,
+		Tags:              map[string]string{},
+		ProfileTypes: []pyroscope.ProfileType{
+			pyroscope.ProfileCPU,
+			pyroscope.ProfileAllocObjects,
+			pyroscope.ProfileAllocSpace,
+			pyroscope.ProfileInuseObjects,
+			pyroscope.ProfileInuseSpace,
+			pyroscope.ProfileGoroutines,
+			pyroscope.ProfileMutexCount,
+			pyroscope.ProfileMutexDuration,
+			pyroscope.ProfileBlockCount,
+			pyroscope.ProfileBlockDuration,
+		},
+	}
+
+	profiler, err := pyroscope.Start(cfg)
+	if err != nil {
+		log.Fatalf("new profiler failed: %v", err)
+	}
+	return profiler
+}
+
 type checkoutService struct {
 	productCatalogSvcAddr string
 	cartSvcAddr           string
@@ -147,6 +182,13 @@ func main() {
 	defer func() {
 		if err := mp.Shutdown(context.Background()); err != nil {
 			log.Printf("Error shutting down meter provider: %v", err)
+		}
+	}()
+
+	pp := initProfilerProvider()
+	defer func() {
+		if err := pp.Stop(); err != nil {
+			log.Printf("Error shutting down profiler provider: %v", err)
 		}
 	}()
 
