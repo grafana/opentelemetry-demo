@@ -375,7 +375,9 @@ services:
     restart: unless-stopped
     ports:
       - "${LOCUST_WEB_PORT}"
+    command: run /etc/script.js
     environment:
+      - WEB_HOST
       - LOCUST_WEB_PORT
       - LOCUST_USERS
       - LOCUST_HOST
@@ -386,6 +388,8 @@ services:
       - OTEL_RESOURCE_ATTRIBUTES
       - OTEL_SERVICE_NAME=loadgenerator
       - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+    volumes:
+      - ./src/loadgenerator/script.js:/etc/script.js
     depends_on:
       frontend:
         condition: service_started
