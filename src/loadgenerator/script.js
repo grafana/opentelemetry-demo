@@ -1,6 +1,7 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { browser } from 'k6/experimental/browser';
+import { expect } from 'https://jslib.k6.io/k6chaijs/4.3.4.0/index.js'
 
 import people from './people.json';
 
@@ -47,31 +48,69 @@ export const options = {
                 },
             },
         },
+        api: {
+            exec: 'api',
+            executor: 'shared-iterations',
+        }
     },
     thresholds: {
         checks: ["rate==1.0"]
     }
 }
 
+export class Homepage {
+    constructor(page) {
+        this.page = page;
+    }
+
+    async goto() {
+        await this.page.goto(__ENV.WEB_HOST);
+    }
+
+    async selectRandomProduct() {
+        const productToFind = Math.floor(Math.random() * 10) + 1;
+        await this.page.locator(`div[data-cy="product-list"] div[data-cy="product-card"]:nth-child(${productToFind})`).click();
+    }
+
+    numberOfProducts() {
+        return this.page.$$('div[data-cy="product-list"] div[data-cy="product-card"]').length;
+    }
+
+    async waitForProductList() {
+        await this.page.waitForSelector('div[data-cy="product-list"]');
+    }
+}
+
+export class ProductDetailPage {
+    constructor(page) {
+        this.page = page;
+        this.addToCartButton = this.page.locator('button[data-cy="product-add-to-cart"]');
+    }
+
+    async addToCart() {
+        await this.addToCartButton.click();
+    }
+}
+
 export default async function () {
     const context = browser.newContext();
+    context.setDefaultTimeout(5000);
     const page = context.newPage();
 
     try {
-        await page.goto(__ENV.WEB_HOST);
+        const homepage = new Homepage(page);
+        await homepage.goto();
+        await homepage.waitForProductList();
 
-        const productToFind = Math.floor(Math.random() * 10) + 1;
+        expect(homepage.numberOfProducts()).to.be.above(0);
 
-        await page.locator(`div[data-cy="product-list"] div[data-cy="product-card"]:nth-child(${productToFind})`).click();
-        sleep(1);
+        await homepage.selectRandomProduct();
 
-        // Product detail page
-        check(page, {
-            'add_to_cart_button': p => p.locator('button[data-cy="product-add-to-cart"]').textContent() === 'Add To cart',
-        });
+        const productDetailPage = new ProductDetailPage(page);
 
-        //page.locator('select[data-cy="product-quantity"]').selectOption(1);
-        await page.locator('button[data-cy="product-add-to-cart"]').click();
+        expect(productDetailPage.addToCartButton.innerText()).to.equal('Add To cart');
+
+        await productDetailPage.addToCart();
         sleep(1);
 
         // checkout
@@ -80,4 +119,35 @@ export default async function () {
     } finally {
         context.close();
     }
+}
+
+export function api() {
+    http.get(`${__ENV.WEB_HOST}`);
+
+    // random category
+    const category = categories[Math.floor(Math.random() * categories.length)];
+
+    // random product
+    const product = products[Math.floor(Math.random() * products.length)];
+
+    http.get(`${__ENV.WEB_HOST}/api/products/${product}`);
+
+    // load recommendations
+    const queryParams = {
+        productIds: [
+            products[Math.floor(Math.random() * products.length)]
+        ],
+    }
+    http.get(`${__ENV.WEB_HOST}/api/recommendations`, { queryParams });
+
+    // get ads
+    const adQueryParams = {
+        "contextKeys": [
+            categories[Math.floor(Math.random() * categories.length)],
+        ],
+    }
+    http.get(`${__ENV.WEB_HOST}/api/ads`, { queryParams: adQueryParams });
+
+    // view cart
+    http.get(`${__ENV.WEB_HOST}/api/cart`);
 }
