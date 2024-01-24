@@ -375,8 +375,10 @@ services:
     restart: unless-stopped
     ports:
       - "${LOCUST_WEB_PORT}"
-    command: run /etc/script.js
+    command: run --out=cloud /etc/script.js
     environment:
+      - K6_CLOUD_TOKEN
+      - K6_CLOUD_PROJECT_ID
       - WEB_HOST
       - LOCUST_WEB_PORT
       - LOCUST_USERS
@@ -390,6 +392,7 @@ services:
       - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
     volumes:
       - ./src/loadgenerator/script.js:/etc/script.js
+      - ./src/loadgenerator/screenshots:/screenshots
     depends_on:
       frontend:
         condition: service_started
