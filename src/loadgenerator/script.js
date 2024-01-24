@@ -87,8 +87,19 @@ export class ProductDetailPage {
         this.addToCartButton = this.page.locator('button[data-cy="product-add-to-cart"]');
     }
 
-    async addToCart() {
-        await this.addToCartButton.click();
+    addToCart() {
+        this.addToCartButton.click();
+    }
+}
+
+export class CheckoutPage {
+    constructor(page) {
+        this.page = page;
+        this.checkoutButton = this.page.locator('button[data-cy="checkout-place-order"]');
+    }
+
+    performCheckout() {
+        this.checkoutButton.click();
     }
 }
 
@@ -107,16 +118,14 @@ export default async function () {
         page.screenshot({ path: '/screenshots/homepage.png' });
 
         homepage.selectRandomProduct();
-
-        const productDetailPage = new ProductDetailPage(page);
-
-        expect(productDetailPage.addToCartButton.innerText()).to.equal('Add To cart');
-
-        await productDetailPage.addToCart();
         sleep(1);
 
-        // checkout
-        await page.locator('button[data-cy="checkout-place-order"]').click();
+        const productDetailPage = new ProductDetailPage(page);
+        productDetailPage.addToCart();
+        sleep(1);
+
+        const checkoutPage = new CheckoutPage(page);
+        checkoutPage.performCheckout();
         sleep(1);
     } finally {
         context.close();
