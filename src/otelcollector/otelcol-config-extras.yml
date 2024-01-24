@@ -21,15 +21,15 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, otlphttp/grafanacloud, spanmetrics]
+      exporters: [otlphttp/grafanacloud, spanmetrics]
     metrics:
       receivers: [otlp, spanmetrics]
       processors: [batch]
-      exporters: [prometheus, logging, otlphttp/grafanacloud]
+      exporters: [otlphttp/prometheus, otlphttp/grafanacloud]
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging]
+      exporters: [otlphttp/grafanacloud]
 
 ## Example configuration for sending data to your own OTLP HTTP backend
 ## Note: the spanmetrics exporter must be included in the exporters array
