@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "@grpc/grpc-js": "1.9.13",
-    "@grafana/faro-instrumentation-performance-timeline": "^1.0.5",
-    "@grafana/faro-web-sdk": "^1.0.5",
-    "@grafana/faro-web-tracing": "^1.0.5",
+    "@grafana/faro-instrumentation-performance-timeline": "^1.3.6",
+    "@grafana/faro-web-sdk": "^1.3.6",
+    "@grafana/faro-web-tracing": "^1.3.6",
     "@opentelemetry/api": "1.7.0",
     "@opentelemetry/auto-instrumentations-node": "0.40.2",
     "@opentelemetry/auto-instrumentations-web": "0.34.0",
