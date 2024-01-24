@@ -67,9 +67,9 @@ export class Homepage {
         await this.page.goto(__ENV.WEB_HOST);
     }
 
-    async selectRandomProduct() {
+    selectRandomProduct() {
         const productToFind = Math.floor(Math.random() * 10) + 1;
-        await this.page.locator(`div[data-cy="product-list"] div[data-cy="product-card"]:nth-child(${productToFind})`).click();
+        this.page.locator(`div[data-cy="product-list"] div[data-cy="product-card"]:nth-child(${productToFind})`).click();
     }
 
     numberOfProducts() {
@@ -105,8 +105,8 @@ export default async function () {
         expect(homepage.numberOfProducts()).to.be.above(0);
 
         page.screenshot({ path: '/screenshots/homepage.png' });
-        // this fails randomly and i need to debug why :(
-        await homepage.selectRandomProduct();
+
+        homepage.selectRandomProduct();
 
         const productDetailPage = new ProductDetailPage(page);
 
