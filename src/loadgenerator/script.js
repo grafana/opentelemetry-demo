@@ -115,8 +115,6 @@ export default async function () {
 
         expect(homepage.numberOfProducts()).to.be.above(0);
 
-        page.screenshot({ path: '/screenshots/homepage.png' });
-
         homepage.selectRandomProduct();
         sleep(1);
 
