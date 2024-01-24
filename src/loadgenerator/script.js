@@ -42,6 +42,7 @@ export const options = {
     scenarios: {
         ui: {
             executor: 'shared-iterations',
+            iterations: 200,
             options: {
                 browser: {
                     type: 'chromium',
@@ -51,6 +52,7 @@ export const options = {
         api: {
             exec: 'api',
             executor: 'shared-iterations',
+            iterations: 200,
         }
     },
     thresholds: {
@@ -159,4 +161,16 @@ export function api() {
 
     // view cart
     http.get(`${__ENV.WEB_HOST}/api/cart`);
+
+    // add to cart
+    const productForCart = products[Math.floor(Math.random() * products.length)];
+    http.get(`${__ENV.WEB_HOST}/api/products/${productForCart}`);
+    const cart_item = {
+        "item": {
+            "productId": productForCart,
+            "quantity": Math.floor(Math.random() * 10) + 1,
+        },
+        "userId": Math.floor(Math.random() * people.length),
+    }
+    http.post(`${__ENV.WEB_HOST}/api/cart`, cart_item, { headers: { "Content-Type": "application/json" } });
 }
