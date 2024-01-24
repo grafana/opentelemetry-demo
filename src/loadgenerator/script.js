@@ -27,6 +27,16 @@ const products = [
     'HQTGWGPNH4',
 ]
 
+const currencies = [
+    'USD',
+    'EUR',
+    'JPY',
+    'CAD',
+    'AUD',
+    'GBP',
+    'CHF',
+]
+
 export const options = {
     scenarios: {
         ui: {
@@ -47,39 +57,27 @@ export default async function () {
     const context = browser.newContext();
     const page = context.newPage();
 
-    http.get(`${__ENV.WEB_HOST}`);
-    sleep(1);
-
     try {
-        await page.goto(`http://${__ENV.WEB_HOST}`);
+        await page.goto(__ENV.WEB_HOST);
 
-        const productToFind = Math.floor(Math.random() * 9) + 1;
+        const productToFind = Math.floor(Math.random() * 10) + 1;
 
-        const detailPageButton = page.locator(`#product-list div.product:nth-child(${productToFind}) a.btn`);
-
-        await Promise.all([page.waitForNavigation(), detailPageButton.click()]);
-
-        check(page, {
-            'header': p => p.locator('h1').textContent() == 'Faros',
-        });
+        await page.locator(`div[data-cy="product-list"] div[data-cy="product-card"]:nth-child(${productToFind})`).click();
+        sleep(1);
 
         // Product detail page
-        page.locator('input[name="add_to_cart[quantity]"]').type(1);
-        const addButton = page.locator('button#add_to_cart_add')
-
-        await Promise.all([page.waitForNavigation(), addButton.click()]);
-
-        // checkout
-        const checkoutButton = page.locator('a#checkout');
-
-        await Promise.all([page.waitForNavigation(), checkoutButton.click()]);
-
         check(page, {
-            'header': p => p.locator('h1').textContent() == 'Checkout Succeeded!',
+            'add_to_cart_button': p => p.locator('button[data-cy="product-add-to-cart"]').textContent() === 'Add To cart',
         });
 
-        page.waitForTimeout(5000);
+        //page.locator('select[data-cy="product-quantity"]').selectOption(1);
+        await page.locator('button[data-cy="product-add-to-cart"]').click();
+        sleep(1);
+
+        // checkout
+        await page.locator('button[data-cy="checkout-place-order"]').click();
+        sleep(1);
     } finally {
-        page.close();
+        context.close();
     }
 }
