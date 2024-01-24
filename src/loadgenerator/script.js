@@ -94,7 +94,7 @@ export class ProductDetailPage {
 
 export default async function () {
     const context = browser.newContext();
-    context.setDefaultTimeout(5000);
+    context.setDefaultTimeout(10000);
     const page = context.newPage();
 
     try {
@@ -104,6 +104,8 @@ export default async function () {
 
         expect(homepage.numberOfProducts()).to.be.above(0);
 
+        page.screenshot({ path: '/screenshots/homepage.png' });
+        // this fails randomly and i need to debug why :(
         await homepage.selectRandomProduct();
 
         const productDetailPage = new ProductDetailPage(page);
