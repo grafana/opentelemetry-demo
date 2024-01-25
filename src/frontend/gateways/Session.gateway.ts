@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { v4 } from 'uuid';
+import {faro} from "@grafana/faro-web-sdk";
 
 interface ISession {
   userId: string;
@@ -25,6 +26,16 @@ const SessionGateway = () => ({
   },
   setSessionValue<K extends keyof ISession>(key: K, value: ISession[K]) {
     const session = this.getSession();
+    const faroSession = faro.api.getSession();
+    if (faroSession !== undefined) {
+      if (faroSession.attributes === undefined) {
+        faroSession.attributes = {};
+      }
+
+      faroSession.attributes[key] = value.toString();
+
+      faro.api.setSession(faroSession);
+    }
 
     localStorage.setItem(sessionKey, JSON.stringify({ ...session, [key]: value }));
   },
