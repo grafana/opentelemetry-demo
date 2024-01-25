@@ -32,7 +32,7 @@ const SessionGateway = () => ({
         faroSession.attributes = {};
       }
 
-      faroSession.attributes[key] = value.toString();
+      faroSession.attributes[key] = value;
 
       faro.api.setSession(faroSession);
     }
