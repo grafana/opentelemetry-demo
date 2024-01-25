@@ -19,6 +19,8 @@ const Cart: NextPage = () => {
   } = useCart();
 
   useEffect(() => {
+    faro.api?.setView({name: 'cart'});
+
     faro.api?.pushEvent('page', {
       name: 'Cart',
     });

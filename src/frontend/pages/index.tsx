@@ -21,6 +21,7 @@ const Home: NextPage = () => {
   );
 
   useEffect(() => {
+    faro.api?.setView({name: 'Home'});
     faro.api?.pushEvent('page', {
       name: 'Home'
     });

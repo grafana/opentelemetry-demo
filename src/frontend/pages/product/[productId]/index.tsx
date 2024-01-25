@@ -34,9 +34,11 @@ const ProductDetail: NextPage = () => {
   const productId = query.productId as string;
 
   useEffect(() => {
+    faro.api?.setView({name: 'product/[productId]'});
     faro.api?.pushEvent('page', {
       name: 'product/[productId]',
       productId,
+      selectedCurrency,
     });
   });
 
@@ -60,6 +62,7 @@ const ProductDetail: NextPage = () => {
     faro.api?.pushEvent('add-to-cart', {
       productId,
       quantity: String(quantity),
+      selectedCurrency,
     });
 
     await addItem({
