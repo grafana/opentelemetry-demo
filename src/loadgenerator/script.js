@@ -92,12 +92,20 @@ export class ProductDetailPage {
     addToCart() {
         this.addToCartButton.click();
     }
+
+    async goto(productId) {
+        await this.page.goto(`${__ENV.WEB_HOST}/product/${productId}`);
+    }
 }
 
 export class CheckoutPage {
     constructor(page) {
         this.page = page;
         this.checkoutButton = this.page.locator('button[data-cy="checkout-place-order"]');
+    }
+
+    async goto() {
+        await this.page.goto(`${__ENV.WEB_HOST}/cart`);
     }
 
     performCheckout() {
@@ -107,7 +115,7 @@ export class CheckoutPage {
 
 export default async function () {
     const context = browser.newContext();
-    context.setDefaultTimeout(10000);
+    context.setDefaultTimeout(15000);
     const page = context.newPage();
 
     try {
@@ -121,10 +129,12 @@ export default async function () {
         sleep(1);
 
         const productDetailPage = new ProductDetailPage(page);
+        await productDetailPage.goto(products[Math.floor(Math.random() * products.length)]);
         productDetailPage.addToCart();
         sleep(1);
 
         const checkoutPage = new CheckoutPage(page);
+        await checkoutPage.goto();
         checkoutPage.performCheckout();
         sleep(1);
     } finally {
