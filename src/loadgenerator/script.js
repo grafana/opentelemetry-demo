@@ -18,7 +18,6 @@ const categories = [
 const products = [
     '0PUK6V6EV0',
     '1YMWWN1N4O',
-    '2JAZZY3GM2N',
     '66VCHSJNUP',
     '6E92ZMYYFZ',
     '9SIQT8TOJO',
