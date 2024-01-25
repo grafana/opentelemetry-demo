@@ -44,6 +44,8 @@ const InstrumentationMiddleware = (handler: NextApiHandler): NextApiHandler => {
       span.setAttribute(AttributeNames.SESSION_ID, request.query['sessionId']);
     }
 
+    response.setHeader('server-timing', `traceparent;desc="00-${span?.spanContext().traceId}-${span?.spanContext().spanId}-01"`);
+
     let httpStatus = 200;
     try {
       await runWithSpan(span, async () => handler(request, response));
