@@ -136,6 +136,7 @@ export default async function () {
         const checkoutPage = new CheckoutPage(page);
         await checkoutPage.goto();
         checkoutPage.performCheckout();
+        await page.goto(page.url());
         sleep(1);
     } finally {
         context.close();
