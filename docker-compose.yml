@@ -373,7 +373,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 120M
+          memory: 800M
     restart: unless-stopped
     ports:
       - "${LOCUST_WEB_PORT}"
