@@ -197,7 +197,15 @@ const CheckoutForm = ({ onSubmit }: IProps) => {
         <S.CartButton
           data-cy={CypressFields.CheckoutPlaceOrder}
           type="submit"
-          onClick={() => faro.api.pushError(new Error('Order not visible enough'))}
+          onClick={() => {
+            if (Math.random() < 0.9) {
+                faro.api.pushEvent('app_checkout', { status: 'success' });
+            } else {
+              faro.api.pushEvent('app_checkout', {status: 'failure'});
+
+              throw new Error('Cart checkout failed!');
+            }
+          }}
         >
           Place Order
         </S.CartButton>

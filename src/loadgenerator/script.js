@@ -62,6 +62,7 @@ export const options = {
 export class Homepage {
     constructor(page) {
         this.page = page;
+        this.currencySwitcher = this.page.locator('select[data-cy="currency-switcher"]');
     }
 
     async goto() {
@@ -79,6 +80,11 @@ export class Homepage {
 
     async waitForProductList() {
         await this.page.waitForSelector('div[data-cy="product-list"]');
+    }
+
+    selectRandomCurrency() {
+        const currencyToFind = Math.floor(Math.random() * currencies.length);
+        this.currencySwitcher.selectOption(currencies[currencyToFind]);
     }
 }
 
@@ -118,10 +124,13 @@ export default async function () {
     const page = context.newPage();
 
     try {
-        const homepage = new Homepage(page);
+        let homepage = new Homepage(page);
         await homepage.goto();
         await homepage.waitForProductList();
+        homepage.selectRandomCurrency();
+        sleep(1);
 
+        homepage = new Homepage(page);
         expect(homepage.numberOfProducts()).to.be.above(0);
 
         homepage.selectRandomProduct();
@@ -132,10 +141,16 @@ export default async function () {
         productDetailPage.addToCart();
         sleep(1);
 
-        const checkoutPage = new CheckoutPage(page);
+        let checkoutPage = new CheckoutPage(page);
         await checkoutPage.goto();
+        sleep(1);
+
+        checkoutPage = new CheckoutPage(page);
         checkoutPage.performCheckout();
+        sleep(1);
+
         await page.goto(page.url());
+
         sleep(1);
     } finally {
         context.close();
