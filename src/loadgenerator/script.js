@@ -161,11 +161,11 @@ export class CheckoutPage {
     }
 
     setCreditCardExpirationMonth(creditCardExpirationMonth) {
-        this.creditCardExpirationMonthInput.selectOption(creditCardExpirationMonth);
+        this.creditCardExpirationMonthInput.selectOption(String(creditCardExpirationMonth));
     }
 
     setCreditCardExpirationYear(creditCardExpirationYear) {
-        this.creditCardExpirationYearInput.selectOption(creditCardExpirationYear);
+        this.creditCardExpirationYearInput.selectOption(String(creditCardExpirationYear));
     }
 
     setCreditCardCVV(creditCardCVV) {
