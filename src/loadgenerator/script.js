@@ -122,8 +122,8 @@ export class CheckoutPage {
         this.stateInput = this.page.locator('input#state');
         this.countryInput = this.page.locator('input#country');
         this.creditCardNumberInput = this.page.locator('input#credit_card_number');
-        this.creditCardExpirationMonthInput = this.page.locator('input#credit_card_expiration_month');
-        this.creditCardExpirationYearInput = this.page.locator('input#credit_card_expiration_year');
+        this.creditCardExpirationMonthInput = this.page.locator('select#credit_card_expiration_month');
+        this.creditCardExpirationYearInput = this.page.locator('select#credit_card_expiration_year');
         this.creditCardCVVInput = this.page.locator('input#credit_card_cvv');
         this.checkoutButton = this.page.locator('button[data-cy="checkout-place-order"]');
     }
