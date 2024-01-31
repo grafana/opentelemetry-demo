@@ -1,9 +1,14 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
+import { SharedArray } from 'k6/data';
 import { browser } from 'k6/experimental/browser';
 import { expect } from 'https://jslib.k6.io/k6chaijs/4.3.4.0/index.js'
 
-import people from './people.json';
+const data = new SharedArray('users', function () {
+    // here you can open files, and then do additional processing or generate the array with data dynamically
+    const f = JSON.parse(open('./people.json'));
+    return f; // f must be an array[]
+});
 
 const categories = [
     'binoculars',
@@ -82,6 +87,10 @@ export class Homepage {
         await this.page.waitForSelector('div[data-cy="product-list"]');
     }
 
+    selectCurrency(currency) {
+        this.currencySwitcher.selectOption(currency);
+    }
+
     selectRandomCurrency() {
         const currencyToFind = Math.floor(Math.random() * currencies.length);
         this.currencySwitcher.selectOption(currencies[currencyToFind]);
@@ -106,11 +115,61 @@ export class ProductDetailPage {
 export class CheckoutPage {
     constructor(page) {
         this.page = page;
+        this.emailInput = this.page.locator('input#email');
+        this.streetInput = this.page.locator('input#street_address');
+        this.zipCodeInput = this.page.locator('input#zip_code');
+        this.cityInput = this.page.locator('input#city');
+        this.stateInput = this.page.locator('input#state');
+        this.countryInput = this.page.locator('input#country');
+        this.creditCardNumberInput = this.page.locator('input#credit_card_number');
+        this.creditCardExpirationMonthInput = this.page.locator('input#credit_card_expiration_month');
+        this.creditCardExpirationYearInput = this.page.locator('input#credit_card_expiration_year');
+        this.creditCardCVVInput = this.page.locator('input#credit_card_cvv');
         this.checkoutButton = this.page.locator('button[data-cy="checkout-place-order"]');
     }
 
     async goto() {
         await this.page.goto(`${__ENV.WEB_HOST}/cart`);
+    }
+
+    setEmail(email) {
+        this.emailInput.fill(email);
+    }
+
+    setStreet(street) {
+        this.streetInput.fill(street);
+    }
+
+    setZipCode(zipCode) {
+        this.zipCodeInput.fill(zipCode);
+    }
+
+    setCity(city) {
+        this.cityInput.fill(city);
+    }
+
+    setState(state) {
+        this.stateInput.fill(state);
+    }
+
+    setCountry(country) {
+        this.countryInput.fill(country);
+    }
+
+    setCreditCardNumber(creditCardNumber) {
+        this.creditCardNumberInput.fill(creditCardNumber);
+    }
+
+    setCreditCardExpirationMonth(creditCardExpirationMonth) {
+        this.creditCardExpirationMonthInput.selectOption(creditCardExpirationMonth);
+    }
+
+    setCreditCardExpirationYear(creditCardExpirationYear) {
+        this.creditCardExpirationYearInput.selectOption(creditCardExpirationYear);
+    }
+
+    setCreditCardCVV(creditCardCVV) {
+        this.creditCardCVVInput.fill(creditCardCVV);
     }
 
     performCheckout() {
@@ -125,9 +184,13 @@ export default async function () {
 
     try {
         let homepage = new Homepage(page);
+
+        // random person
+        const person = data[Math.floor(Math.random() * data.length)];
+
         await homepage.goto();
         await homepage.waitForProductList();
-        homepage.selectRandomCurrency();
+        homepage.selectCurrency(person.userCurrency);
         sleep(1);
 
         homepage = new Homepage(page);
@@ -146,6 +209,17 @@ export default async function () {
         sleep(1);
 
         checkoutPage = new CheckoutPage(page);
+        checkoutPage.setEmail(person.email);
+        checkoutPage.setStreet(person.address.streetAddress);
+        checkoutPage.setZipCode(person.address.zipCode);
+        checkoutPage.setCity(person.address.city);
+        checkoutPage.setState(person.address.state);
+        checkoutPage.setCountry(person.address.country);
+        checkoutPage.setCreditCardNumber(person.creditCard.creditCardNumber);
+        checkoutPage.setCreditCardExpirationMonth(person.creditCard.creditCardExpirationMonth);
+        checkoutPage.setCreditCardExpirationYear(person.creditCard.creditCardExpirationYear);
+        checkoutPage.setCreditCardCVV(person.creditCard.creditCardCvv);
+
         checkoutPage.performCheckout();
         sleep(1);
 
@@ -195,7 +269,7 @@ export function api() {
             "productId": productForCart,
             "quantity": Math.floor(Math.random() * 10) + 1,
         },
-        "userId": Math.floor(Math.random() * people.length),
+        "userId": Math.floor(Math.random() * data.length),
     }
     http.post(`${__ENV.WEB_HOST}/api/cart`, cart_item, { headers: { "Content-Type": "application/json" } });
 }
