@@ -233,6 +233,7 @@ export default async function () {
 
 export function api() {
     http.get(`${__ENV.WEB_HOST}`);
+    sleep(.1);
 
     // random category
     const category = categories[Math.floor(Math.random() * categories.length)];
@@ -241,6 +242,7 @@ export function api() {
     const product = products[Math.floor(Math.random() * products.length)];
 
     http.get(`${__ENV.WEB_HOST}/api/products/${product}`);
+    sleep(.1);
 
     // load recommendations
     const queryParams = {
@@ -249,6 +251,7 @@ export function api() {
         ],
     }
     http.get(`${__ENV.WEB_HOST}/api/recommendations`, { queryParams });
+    sleep(.1);
 
     // get ads
     const adQueryParams = {
@@ -257,9 +260,11 @@ export function api() {
         ],
     }
     http.get(`${__ENV.WEB_HOST}/api/ads`, { queryParams: adQueryParams });
+    sleep(.1);
 
     // view cart
     http.get(`${__ENV.WEB_HOST}/api/cart`);
+    sleep(.1);
 
     // add to cart
     const productForCart = products[Math.floor(Math.random() * products.length)];
@@ -272,4 +277,5 @@ export function api() {
         "userId": Math.floor(Math.random() * data.length),
     }
     http.post(`${__ENV.WEB_HOST}/api/cart`, cart_item, { headers: { "Content-Type": "application/json" } });
+    sleep(.1);
 }
