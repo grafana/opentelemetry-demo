@@ -23,6 +23,7 @@ import (
 	"github.com/google/uuid"
 	otelpyroscope "github.com/grafana/otel-profiling-go"
 	"github.com/grafana/pyroscope-go"
+	"github.com/grafana/pyroscope-go/x/k6"
 	otelhooks "github.com/open-feature/go-sdk-contrib/hooks/open-telemetry/pkg"
 	flagd "github.com/open-feature/go-sdk-contrib/providers/flagd/pkg"
 	"github.com/open-feature/go-sdk/openfeature"
@@ -182,6 +183,7 @@ type checkoutService struct {
 	currencySvcClient       pb.CurrencyServiceClient
 	emailSvcClient          pb.EmailServiceClient
 	paymentSvcClient        pb.PaymentServiceClient
+	featureSvcClient        *openfeature.Client
 }
 
 func main() {
@@ -251,6 +253,7 @@ func main() {
 	defer c.Close()
 
 	svc.kafkaBrokerSvcAddr = os.Getenv("KAFKA_SERVICE_ADDR")
+	svc.featureSvcClient = openfeature.NewClient("checkout")
 
 	if svc.kafkaBrokerSvcAddr != "" {
 		svc.KafkaProducerClient, err = kafka.CreateKafkaProducer([]string{svc.kafkaBrokerSvcAddr}, log)
@@ -268,7 +271,9 @@ func main() {
 
 	var srv = grpc.NewServer(
 		grpc.StatsHandler(otelgrpc.NewServerHandler()),
+		grpc.ChainUnaryInterceptor(svc.k6UnaryInterceptor()),
 	)
+
 	pb.RegisterCheckoutServiceServer(srv, svc)
 	healthpb.RegisterHealthServer(srv, svc)
 	log.Infof("starting to listen on tcp: %q", lis.Addr().String())
@@ -590,9 +595,26 @@ func createProducerSpan(ctx context.Context, msg *sarama.ProducerMessage) trace.
 
 func (cs *checkoutService) checkPaymentFailure(ctx context.Context) bool {
 	openfeature.AddHooks(otelhooks.NewTracesHook())
-	client := openfeature.NewClient("checkout")
-	failureEnabled, _ := client.BooleanValue(
+	failureEnabled, _ := cs.featureSvcClient.BooleanValue(
 		ctx, "paymentServiceUnreachable", false, openfeature.EvaluationContext{},
 	)
 	return failureEnabled
+}
+
+func (cs *checkoutService) checkK6ProfilingEnabled(ctx context.Context) bool {
+	openfeature.AddHooks(otelhooks.NewTracesHook())
+	profilingEnabled, _ := cs.featureSvcClient.BooleanValue(
+		ctx, "k6ProfilingEnabled", false, openfeature.EvaluationContext{},
+	)
+	return profilingEnabled
+}
+
+func (cs *checkoutService) k6UnaryInterceptor() grpc.UnaryServerInterceptor {
+	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) {
+		if !cs.checkK6ProfilingEnabled(ctx) {
+			return handler(ctx, req)
+		}
+
+		return k6.LabelsFromBaggageUnaryInterceptor()(ctx, req, info, handler)
+	}
 }

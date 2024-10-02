@@ -96,6 +96,15 @@
         "off": 0
       },
       "defaultVariant": "off"
+    },
+    "k6ProfilingEnabled": {
+      "description": "Enable labeling profiles with k6 labels.",
+      "state": "ENABLED",
+      "variants": {
+        "on": true,
+        "off": false
+      },
+      "defaultVariant": "off"
     }
   }
 }
